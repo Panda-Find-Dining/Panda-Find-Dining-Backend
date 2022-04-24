@@ -44,7 +44,7 @@ class MealSerializer(serializers.ModelSerializer):
     '''
 
     class Meta:
-        model = Restaurant
+        model = Meal
         fields = (
             'id',
             'creator',
@@ -56,3 +56,8 @@ class MealSerializer(serializers.ModelSerializer):
             'lon',
             'restaurant',
         )        
+
+
+
+
+
