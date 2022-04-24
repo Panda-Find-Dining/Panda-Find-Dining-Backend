@@ -6,6 +6,19 @@ name = "pypi"
 [packages]
 django = "*"
 django-environ = "*"
+djangorestframework = "*"
+django-extensions = "*"
+djoser = "*"
+googlemaps = "*"
+requests = "*"
+django-cors-headers = "*"
+whitenoise = "*"
+boto3 = "*"
+django-storages = "*"
+drf-spectacular = "*"
+psycopg2-binary = "*"
+django-on-heroku = "*"
+gunicorn = "*"
 
 [dev-packages]
 
