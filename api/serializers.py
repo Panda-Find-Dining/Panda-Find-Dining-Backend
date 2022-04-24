@@ -54,7 +54,7 @@ class MealSerializer(serializers.ModelSerializer):
             'radius',
             'lat',
             'lon',
-            'restaurant',
+            # 'restaurant',
         )        
 
 

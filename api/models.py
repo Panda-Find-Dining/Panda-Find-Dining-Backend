@@ -35,9 +35,9 @@ class Meal(models.Model):
     invitee = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='invitee')
     location = models.CharField(blank=False, max_length=100)
     radius = models.IntegerField(blank=True)
-    lat = models.FloatField(blank=True)
-    lon = models.FloatField(blank=True)
-    restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")
+    lat = models.FloatField(blank=True, null=True)
+    lon = models.FloatField(blank=True, null=True)
+    # restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")
     
 
     def __str__(self):
