@@ -37,7 +37,7 @@ class Meal(models.Model):
     radius = models.IntegerField(blank=True)
     lat = models.FloatField(blank=True)
     lon = models.FloatField(blank=True)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name="restaurant")
+    restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")
     
 
     def __str__(self):
