@@ -76,14 +76,12 @@ DELETE / api / meals / {id}
 
 ### response
 
-```json
-
+```txt
 HTTP 204 No Content
 Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
 Content-Type: application/json
 Vary: Accept
 ```
-
 
 
 <!-------------------------- Update part of an Existing Meal  ------------------------------>
@@ -116,12 +114,19 @@ PATCH / api / meals / {id}
 
 ### response
 
-```json
+
+
+```txt
+
 HTTP 200 OK
 Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
 Content-Type: application/json
 Vary: Accept
 
+```
+
+
+```json
 {
     "id": 5,
     "creator": 1,
@@ -167,12 +172,18 @@ PUT / api / meals / {id}
 
 ### response
 
-```json
+```txt
+
 HTTP 200 OK
 Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
 Content-Type: application/json
 Vary: Accept
 
+```
+
+
+
+```json
 {
     "id": 5,
     "creator": 1,
@@ -205,12 +216,21 @@ GET / api / meals / {id}
 
 ### response
 
-```json
+
+
+```txt
+
 HTTP 200 OK
 Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
 Content-Type: application/json
 Vary: Accept
 
+```
+
+
+
+
+```json
 {
     "id": 5,
     "creator": 1,
@@ -256,11 +276,18 @@ POST /api/meal/
 
 ### response
 
-```json
+
+```txt
+
 HTTP 201 Created
 Allow: GET, POST, HEAD, OPTIONS
 Content-Type: application/json
 Vary: Accept
+```
+
+
+
+```json
 
 {
     "id": 4,
@@ -300,12 +327,19 @@ GET /api/meal/
 User must be logged in and authenticated.  Token in header
 
 
-```json
+```txt
+
 HTTP 200 OK
 Allow: GET, POST, HEAD, OPTIONS
 Content-Type: application/json
 Vary: Accept
 
+```
+
+
+
+
+```json
 [
     {
         "id": 3,
@@ -363,9 +397,16 @@ POST /api/auth/users
 
 ### response
 
-```json
+
+```txt
+
 201 Created
 
+```
+
+
+
+```json
 {
   "email": "",
   "username": "admin",
@@ -394,10 +435,17 @@ POST /api/auth/token/login
 
 ### response
 
-```json
+
+```txt
+
 200 OK
 400 Bad Request
 
+```
+
+
+
+```json
 {
   "auth_token": "c312049c7f034a3d1b52eabc2040b46e094ff34c"
 }
