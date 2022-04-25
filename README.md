@@ -29,19 +29,17 @@ https://find-dining-panda.herokuapp.com/
 
 
 
-
-
 ## Retrieve a specific meal
-GET / meals / {id}
+GET / api / meals / {id}
 
 ## Update an existing meal
-PUT / meals / {id}
+PUT / api / meals / {id}
 
 ## Update an existing meal
-PATCH / meals / {id}
+PATCH / api / meals / {id}
 
 ## Delete an existing meal
-DELETE / meals / {id}
+DELETE / api / meals / {id}
 
 
 <!-------------------------- List meals ------------------------------>
@@ -56,7 +54,7 @@ DELETE / meals / {id}
 Required fields:
 
 ```
-POST /meal/
+POST /api/meal/
 ```
 
 ```json
@@ -83,7 +81,7 @@ POST /meal/
 ### request
 
 ```
-GET /meal/
+GET /api/meal/
 ```
 
 ### response
@@ -105,7 +103,7 @@ GET /meal/
 Username and password are required.
 
 ```json
-POST auth/users
+POST /api/auth/users
 
 {
   "username": "admin",
@@ -134,7 +132,7 @@ POST auth/users
 ### request
 
 ```
-POST auth/token/login
+POST /api/auth/token/login
 ```
 
 ```json
@@ -165,13 +163,42 @@ POST auth/token/login
 ### request
 
 ```
-POST auth/token/logout
+POST /api/auth/token/logout
 ```
 
 ### response
 
 ```txt
 204 No Content
+```
+
+
+## TemplateHeader
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+User must be logged in 
+
+Required Fields:
+
+```txt
+POST 
+```
+
+```json
+
+```
+
+### response
+
+```txt
+200 Message
+```
+
+```json
+
 ```
 
 
