@@ -2,7 +2,30 @@
 
 This will store our endpoints and instructions
 
+## Models
 
+### User
+- friends: M2M
+
+### Meal    
+- creator: Fk
+- created_date: DateTimeField
+- invitee: M2M
+- location: CharField
+- radius: Int
+- lat: Float
+- lon: Float
+
+### Restaurant
+- name: Char
+- lat: Float
+- lon: Float
+- formatted_address: Char
+- place_id: Char
+- hours: Char
+- business_status: Bool
+- icon: URLfield
+- meal: Fk
 
 ## Base URL
 
@@ -29,7 +52,7 @@ https://find-dining-panda.herokuapp.com/
 
 
 
-
+<hr>
 
 
 <!-------------------------- Delete an Existing Meal  ------------------------------>
