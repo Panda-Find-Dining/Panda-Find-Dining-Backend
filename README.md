@@ -29,43 +29,226 @@ https://find-dining-panda.herokuapp.com/
 
 
 
-## Retrieve a specific meal
-GET / api / meals / {id}
 
-## Update an existing meal
-PUT / api / meals / {id}
 
-## Update an existing meal
-PATCH / api / meals / {id}
+
+<!-------------------------- Delete an Existing Meal  ------------------------------>
 
 ## Delete an existing meal
-DELETE / api / meals / {id}
 
 
-<!-------------------------- List meals ------------------------------>
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+Required fields: id(of meal)
+
+
+```txt
+DELETE / api / meals / {id} 
+```
+
+### response
+
+```json
+
+HTTP 204 No Content
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+
+
+<!-------------------------- Update part of an Existing Meal  ------------------------------>
+
+## Update an existing meal
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+User must be logged in and authenticated with Token in header
+Required fields: id
+
+```txt
+PATCH / api / meals / {id} 
+```
+
+```json
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach, SC",
+    "radius": 30,
+    "lat": null,
+    "lon": null
+}
+```
+
+### response
+
+```json
+HTTP 200 OK
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach, SC",
+    "radius": 30,
+    "lat": null,
+    "lon": null
+}
+```
+
+
+
+
+<!-------------------------- Update Existing Meal  ------------------------------>
+
+## Update an existing meal
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+User must be logged in and authenticated with Token in header
+Required fields: id
+
+```txt
+PUT / api / meals / {id} 
+```
+
+```json
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach",
+    "radius": 30,
+    "lat": null,
+    "lon": null
+}
+```
+
+### response
+
+```json
+HTTP 200 OK
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach",
+    "radius": 30,
+    "lat": null,
+    "lon": null
+}
+```
+
+
+
+
+
+<!-------------------------- Get Meal Details  ------------------------------>
+
+## Retrieve a specific meal
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+User must be logged in and authenticated with Token in header
+
+```txt
+GET / api / meals / {id} 
+```
+
+### response
+
+```json
+HTTP 200 OK
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+}
+```
+
+
+
+
+<!-------------------------- Create a new meal  ------------------------------>
 
 
  ## Create A New meal
 
 [Back to Endpoints](#api-endpoints)
 
+
 ### request
 
-Required fields:
+User must be logged in and authenticated with Token in header
+Required fields: creator(auto), location (string for search), radius
 
 ```
 POST /api/meal/
 ```
 
 ```json
-
+{
+    "creator": 1,
+    "invitee": [],
+    "location": "Cary, NC",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+}
 ```
 
 ### response
 
 ```json
-201 Created
+HTTP 201 Created
+Allow: GET, POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
 
+{
+    "id": 4,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "Cary, NC",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+}
 ```
 
 
@@ -80,14 +263,58 @@ POST /api/meal/
 
 ### request
 
+
+User must be logged in and authenticated with Token in header
+
+
 ```
 GET /api/meal/
 ```
 
 ### response
 
-```json
 
+User must be logged in and authenticated.  Token in header
+
+
+```json
+HTTP 200 OK
+Allow: GET, POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+[
+    {
+        "id": 3,
+        "creator": 1,
+        "created_date": "2022-04-24T17:40:22.850266-05:00",
+        "invitee": [],
+        "location": "Raleigh",
+        "radius": 20,
+        "lat": null,
+        "lon": null
+    },
+    {
+        "id": 4,
+        "creator": 1,
+        "created_date": "2022-04-25T09:51:02.586210-05:00",
+        "invitee": [],
+        "location": "Cary",
+        "radius": 20,
+        "lat": null,
+        "lon": null
+    },
+    {
+        "id": 5,
+        "creator": 1,
+        "created_date": "2022-04-25T09:51:24.026446-05:00",
+        "invitee": [],
+        "location": "North Myrtle Beach",
+        "radius": 20,
+        "lat": null,
+        "lon": null
+    }
+]
 ```
 
 
@@ -181,6 +408,7 @@ POST /api/auth/token/logout
 
 User must be logged in 
 
+User must be logged in and authenticated with Token in header
 Required Fields:
 
 ```txt
