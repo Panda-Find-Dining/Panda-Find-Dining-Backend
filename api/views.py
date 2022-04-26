@@ -4,8 +4,8 @@ from .serializers import UserSerializer, RestaurantSerializer, MealSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import permissions
-from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework import permissions, generics, status
 from .permissions import IsOwnerOrReadOnly
 
 
@@ -21,3 +21,36 @@ class MealViewSet(ModelViewSet):
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
     permission_class = [AllowAny]
+
+# Searching
+# class UserSearchView(generics.ListAPIView):
+#     serializer_class = UserSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+#     def get_queryset(self):
+#         queryset = User.objects.all()
+#         friend_username = self.request.query_params.get('username')
+#         if friend_username is not None:
+#             queryset = queryset.filter(friend_username__icontains=friend_username)
+#         return queryset
+
+# Follow/Unfollow
+class SaveFriendView(APIView):
+        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+                
+        def post(request, self, pk,format=None):    
+            current_profile = self.user
+            other_profile = pk
+            current_profile.friends.add(other_profile)
+
+            return Response({"Requested" : "Save request has been sent!!"},status=status.HTTP_200_OK)
+
+class DeleteFriendView(APIView):
+        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+                
+        def delete(request, self, pk,format=None):    
+            current_profile = self.user
+            other_profile = pk
+            current_profile.friends.remove(other_profile)
+
+            return Response({"Requested" : "Deleted!"},status=status.HTTP_200_OK)
