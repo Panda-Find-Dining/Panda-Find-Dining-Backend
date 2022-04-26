@@ -20,7 +20,7 @@ from api import views
 from django.urls import include
 
 router = routers.DefaultRouter()
-router.register(r'meal', views.MealViewSet)
+router.register(r'meals', views.MealViewSet)
 
 
 urlpatterns = [
