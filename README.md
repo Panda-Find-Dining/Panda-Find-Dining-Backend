@@ -49,10 +49,70 @@ https://find-dining-panda.herokuapp.com/
 |PUT|[/api/meals/{id}](#update-an-existing-meal)|Update an existing meal|Yes|
 |PATCH|[/api/meals/{id}](#update-an-existing-meal)|Update part of an existing meal|Yes|
 |DELETE|[/api/meals/{id}](#delete-meal)|Delete an existing meal|Yes|
+|POST|[/api/users/](#get-list-of-all-users)|Get-list-of-all-users|Yes|
+
+
 
 
 
 <hr>
+
+<!-------------------------- Get list of all users  ------------------------------>
+
+## Get list of all users
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / users 
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+[
+    {
+        "id": 2,
+        "username": "Ryan",
+        "friends": []
+    },
+    {
+        "id": 3,
+        "username": "Paul",
+        "friends": []
+    },
+    {
+        "id": 4,
+        "username": "Tyler",
+        "friends": []
+    },
+    {
+        "id": 5,
+        "username": "KE",
+        "friends": []
+    },
+    {
+        "id": 1,
+        "username": "admin",
+        "friends": []
+    }
+]
+```
 
 
 <!-------------------------- Delete an Existing Meal  ------------------------------>
