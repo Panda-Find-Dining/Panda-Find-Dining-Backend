@@ -30,7 +30,8 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls.authtoken')),
     # path('api/search/', views.UserSearchView.as_view()),
     # Follow/Unfollow
-    path('api/following/<int:pk>/', views.SaveFriendView.as_view()),
+    path('api/follow/<int:pk>/', views.SaveFriendView.as_view()),
     path('api/unfollow/<int:pk>/', views.DeleteFriendView.as_view()),
     path('api/users/', views.UserList.as_view(), name='user-list'),
+    path('api/users/<int:pk>', views.UserDetailView.as_view(), name='user-list'),
 ]

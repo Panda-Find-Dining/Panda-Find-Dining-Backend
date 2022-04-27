@@ -62,7 +62,15 @@ class UserList(generics.ListAPIView):
     '''
     Return a list of all the users registered to use the application
     '''
+    # breakpoint()
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    '''
+    Update or delete details for a single user
+    '''
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
