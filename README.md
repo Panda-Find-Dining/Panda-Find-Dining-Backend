@@ -264,14 +264,21 @@ POST /api/meal/
 ```
 
 ```json
+
 {
-    "creator": 1,
-    "invitee": [],
+    "creator": 3,
+    "invitee": [1,
+        2,
+        3,
+        4,
+        5
+    ],
     "location": "Cary, NC",
     "radius": 20,
     "lat": null,
     "lon": null
 }
+
 ```
 
 ### response
@@ -288,16 +295,21 @@ Vary: Accept
 
 
 ```json
-
 {
-    "id": 4,
-    "creator": 1,
-    "created_date": "2022-04-25T09:51:24.026446-05:00",
-    "invitee": [],
-    "location": "Cary, NC",
-    "radius": 20,
-    "lat": null,
-    "lon": null
+  "id": 10,
+  "creator": 3,
+  "created_date": "2022-04-27T10:06:16.694038-05:00",
+  "invitee": [
+    2,
+    3,
+    4,
+    5,
+    1
+  ],
+  "location": "Cary, NC",
+  "radius": 20,
+  "lat": null,
+  "lon": null
 }
 ```
 
