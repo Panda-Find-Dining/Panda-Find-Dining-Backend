@@ -1,7 +1,7 @@
 from calendar import c
 from django.shortcuts import render
 from .models import User, Restaurant, Meal
-from .serializers import UserSerializer, RestaurantSerializer, MealSerializer
+from .serializers import UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -15,6 +15,8 @@ from rest_framework.generics import ListAPIView
 
 class MealViewSet(ModelViewSet):
     '''
+    This ViewSet creates the following endpoints:
+
     List all meals with answers:      GET / meals /
     Retrieve a specific meal:         GET / meals / {id}
     Add a new meal:                   POST / meals /
@@ -92,3 +94,19 @@ class UserSearchResultsView(ListView):
 
 
 
+class UserList(generics.ListAPIView):
+    '''
+    Return a list of all the users registered to use the application
+    '''
+    # breakpoint()
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    '''
+    Update or delete details for a single user
+    '''
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
