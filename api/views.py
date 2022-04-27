@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import User, Restaurant, Meal
-from .serializers import UserSerializer, RestaurantSerializer, MealSerializer
+from .serializers import UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -11,6 +11,8 @@ from .permissions import IsOwnerOrReadOnly
 
 class MealViewSet(ModelViewSet):
     '''
+    This ViewSet creates the following endpoints:
+
     List all meals with answers:      GET / meals /
     Retrieve a specific meal:         GET / meals / {id}
     Add a new meal:                   POST / meals /
@@ -54,3 +56,13 @@ class DeleteFriendView(APIView):
             current_profile.friends.remove(other_profile)
 
             return Response({"Requested" : "Deleted!"},status=status.HTTP_200_OK)
+
+
+class UserList(generics.ListAPIView):
+    '''
+    Return a list of all the users registered to use the application
+    '''
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+

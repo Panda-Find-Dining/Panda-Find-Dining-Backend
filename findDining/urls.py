@@ -32,5 +32,5 @@ urlpatterns = [
     # Follow/Unfollow
     path('api/following/<int:pk>/', views.SaveFriendView.as_view()),
     path('api/unfollow/<int:pk>/', views.DeleteFriendView.as_view()),
-
+    path('api/users/', views.UserList.as_view(), name='user-list'),
 ]
