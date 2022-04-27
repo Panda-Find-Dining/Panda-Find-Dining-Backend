@@ -19,6 +19,8 @@ drf-spectacular = "*"
 psycopg2-binary = "*"
 django-on-heroku = "*"
 gunicorn = "*"
+pdbpp = "*"
+werkzeug = "*"
 
 [dev-packages]
 

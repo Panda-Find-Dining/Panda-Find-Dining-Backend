@@ -24,9 +24,11 @@ class MealViewSet(ModelViewSet):
     Update part of an existing meal:  PATCH / meals / {id}
     Remove a meal:                    DELETE / meals / {id} /
     '''
+    # breakpoint()
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
     permission_class = [AllowAny]
+
 
 # Searching
 class UserSearchView(generics.ListAPIView):
