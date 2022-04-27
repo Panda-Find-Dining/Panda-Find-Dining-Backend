@@ -38,17 +38,17 @@ https://find-dining-panda.herokuapp.com/
 ## API Endpoints
     
 
-|  Method  |  Endpoint  |  Description |  Deployed  |
-| -------- | ---------- | ------------ | ---------- |
-|POST|[/auth/users/](#register-a-new-user)|register a new user|Yes|
-|POST|[/auth/token/login/](#log-in)|login with existing user|Yes|
-|POST|[/auth/token/logout/](#log-out)|logout with existing user|Yes|
-|GET|[/meals/](#list-all-meals)|List all meals|Yes|
-|GET|[/meals/{id}](#retrieve-a-specific-meal)|Retrieve a specific meal|Yes|
-|POST|[/meals/](#create-a-new-meal)|Add a new meal|Yes|
-|PUT|[/meals/{id}](#update-an-existing-meal)|Update an existing meal|Yes|
-|PATCH|[/meals/{id}](#update-an-existing-meal)|Update part of an existing meal|Yes|
-|DELETE|[/meals/{id}](#delete-meal)|Delete an existing meal|Yes|
+|Method|Endpoint|Description|Deployed|
+|-|-|-|-|
+|POST|[/api/auth/users/](#register-a-new-user)|register a new user|Yes|
+|POST|[/api/auth/token/login/](#log-in)|login with existing user|Yes|
+|POST|[/api/auth/token/logout/](#log-out)|logout with existing user|Yes|
+|GET|[/api/meals/](#list-all-meals)|List all meals|Yes|
+|GET|[/api/meals/{id}](#retrieve-a-specific-meal)|Retrieve a specific meal|Yes|
+|POST|[/api/meals/](#create-a-new-meal)|Add a new meal|Yes|
+|PUT|[/api/meals/{id}](#update-an-existing-meal)|Update an existing meal|Yes|
+|PATCH|[/api/meals/{id}](#update-an-existing-meal)|Update part of an existing meal|Yes|
+|DELETE|[/api/meals/{id}](#delete-meal)|Delete an existing meal|Yes|
 
 
 
