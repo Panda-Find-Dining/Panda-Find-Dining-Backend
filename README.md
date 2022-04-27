@@ -50,7 +50,77 @@ https://find-dining-panda.herokuapp.com/
 |PATCH|[/api/meals/{id}](#update-an-existing-meal)|Update part of an existing meal|Yes|
 |DELETE|[/api/meals/{id}](#delete-meal)|Delete an existing meal|Yes|
 |POST|[/api/users/](#get-list-of-all-users)|Get list of all users|Yes|
+|POST|[/api/follow/](#follow-user)|Follow (or friend) a new user|Yes|
+|DELETE|[/api/unfollow/](#unfollow-user)|Unfollow (or unfriend) a user|Yes|
 
+
+<!-------------------------- Unfollow or Unfriend a User  ------------------------------>
+
+## Unfollow user
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+DELETE / api / unfollow / <pk> 
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+	"Requested": "Deleted!"
+}
+```
+
+
+
+<!-------------------------- Follow or Friend a User  ------------------------------>
+
+## Follow user
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+POST / api / follow / <pk> 
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+	"Requested": "Save request has been sent!!"
+}
+```
 
 
 
