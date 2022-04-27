@@ -1,0 +1,35 @@
+
+
+
+### ====================== User Search List ======================
+GET http://127.0.0.1:8000/api/users/ HTTP/1.1
+content-type: application/json
+Authorization: Token 07e209c66dbed31849fd5ff64ddc5d338635c39d
+
+
+
+### ====================== User Search List ======================
+GET http://127.0.0.1:8000/api/search/?q=paul HTTP/1.1
+content-type: application/json
+Authorization: Token 07e209c66dbed31849fd5ff64ddc5d338635c39d
+
+
+
+
+### ====================== GET ALL MEALS ======================
+GET http://127.0.0.1:8000/api/meals/ HTTP/1.1
+content-type: application/json
+Authorization: Token 07e209c66dbed31849fd5ff64ddc5d338635c39d
+
+
+
+
+### ====================== GET ALL MEALS ======================
+GET http://127.0.0.1:8000/api/meals/ HTTP/1.1
+content-type: application/json
+Authorization: Token 07e209c66dbed31849fd5ff64ddc5d338635c39d
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
