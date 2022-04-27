@@ -49,7 +49,7 @@ https://find-dining-panda.herokuapp.com/
 |PUT|[/api/meals/{id}](#update-an-existing-meal)|Update an existing meal|Yes|
 |PATCH|[/api/meals/{id}](#update-an-existing-meal)|Update part of an existing meal|Yes|
 |DELETE|[/api/meals/{id}](#delete-meal)|Delete an existing meal|Yes|
-|POST|[/api/users/](#get-list-of-all-users)|Get-list-of-all-users|Yes|
+|POST|[/api/users/](#get-list-of-all-users)|Get list of all users|Yes|
 
 
 
