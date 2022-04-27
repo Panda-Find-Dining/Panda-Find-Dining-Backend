@@ -1,3 +1,4 @@
+from calendar import c
 from django.shortcuts import render
 from .models import User, Restaurant, Meal
 from .serializers import UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer
@@ -7,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions, generics, status
 from .permissions import IsOwnerOrReadOnly
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.views.generic.list import ListView
+from rest_framework.generics import ListAPIView
 
 
 class MealViewSet(ModelViewSet):
@@ -20,21 +24,32 @@ class MealViewSet(ModelViewSet):
     Update part of an existing meal:  PATCH / meals / {id}
     Remove a meal:                    DELETE / meals / {id} /
     '''
+    # breakpoint()
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
     permission_class = [AllowAny]
 
-# Searching
-# class UserSearchView(generics.ListAPIView):
-#     serializer_class = UserSerializer
-#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-#     def get_queryset(self):
-#         queryset = User.objects.all()
-#         friend_username = self.request.query_params.get('username')
-#         if friend_username is not None:
-#             queryset = queryset.filter(friend_username__icontains=friend_username)
-#         return queryset
+# Searching
+class UserSearchView(generics.ListAPIView):
+    '''
+    This view will search all usernames for the query parameter
+    passed in by the URL.
+
+    ex: Lookup Input Field [john wick]
+    url would look like:
+    /api/search/?q=john+wick
+    '''
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        # breakpoint()
+        friend_username = self.request.query_params.get('q')
+        if friend_username is not None:
+            queryset = queryset.filter(username__icontains=friend_username)
+        return queryset
 
 # Follow/Unfollow
 class SaveFriendView(APIView):
@@ -56,6 +71,29 @@ class DeleteFriendView(APIView):
             current_profile.friends.remove(other_profile)
 
             return Response({"Requested" : "Deleted!"},status=status.HTTP_200_OK)
+
+
+class UserSearchResultsView(ListView):
+    '''
+    This view utilizes a PostGres Full Text Search in order to return a 
+    list of users based on the string input in the UI form.
+
+    This will search username, first name and last name of all users
+
+    ex: Lookup Input Field [john wick]
+    url would look like:
+    /api/search/?q=john+wick
+    '''
+    model = User
+    context_object_name = "user"
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+
+        return User.objects.annotate(search=SearchVector("username", "first_name", "last_name")).filter(
+            search=query
+        )
+
 
 
 class UserList(generics.ListAPIView):
