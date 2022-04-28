@@ -11,9 +11,11 @@ from .permissions import IsOwnerOrReadOnly
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.views.generic.list import ListView
 from rest_framework.generics import ListAPIView
+from django.conf import settings
 import responses
 import googlemaps
 import requests
+from findDining.settings import GOOGLE_MAPS_API_KEY as google_api_key
 
 
 class MealViewSet(ModelViewSet):
@@ -127,7 +129,7 @@ class GoogleAPICall(APIView):
 
         def get_restaurants():
             print(this_meal)
-            url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20{this_meal.location}%20NorthCarolina&key=AIzaSyAZewudmulZF6W0C9MRW43XKIOyCFnxF8I"
+            url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20{this_meal.location}%20NorthCarolina&key={google_api_key}"
             response = requests.get(url)
             data = response.json()
             restaurants = data['results']
@@ -141,5 +143,7 @@ class GoogleAPICall(APIView):
                     meal=this_meal
                 )
                 restaurant_data.save()
+
         get_restaurants()
+        
         return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)
