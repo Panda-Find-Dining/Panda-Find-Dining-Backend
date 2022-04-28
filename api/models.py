@@ -34,12 +34,12 @@ class User(AbstractUser):
 
 class Restaurant(models.Model):
     name = models.CharField(blank=False, max_length=100)
-    lat = models.FloatField(blank=True)
-    lon = models.FloatField(blank=True)
+    lat = models.FloatField(blank=True, null=True)
+    lon = models.FloatField(blank=True, null=True)
     formatted_address = models.CharField(max_length=300)
     place_id = models.CharField(max_length=300)
     hours = models.CharField(max_length=200, blank=True)
-    business_status = models.BooleanField(default=True)
+    business_status = models.CharField(max_length=200, blank=True)
     icon = models.URLField(blank=True)
     meal = models.ForeignKey(
         'Meal', on_delete=models.CASCADE, related_name="meal")
@@ -54,8 +54,8 @@ class Meal(models.Model):
     created_date = models.DateTimeField(auto_now_add=datetime.now)
     invitee = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name='invitee')
-    location = models.CharField(blank=True, max_length=100)
-    radius = models.IntegerField(blank=True)
+    location = models.CharField(blank=True, null=True, max_length=100)
+    radius = models.IntegerField(blank=True, null=True)
     lat = models.FloatField(blank=True, null=True)
     lon = models.FloatField(blank=True, null=True)
     # restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")

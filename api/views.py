@@ -11,6 +11,9 @@ from .permissions import IsOwnerOrReadOnly
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.views.generic.list import ListView
 from rest_framework.generics import ListAPIView
+import responses
+import googlemaps
+import requests
 
 
 class MealViewSet(ModelViewSet):
@@ -52,30 +55,33 @@ class UserSearchView(generics.ListAPIView):
         return queryset
 
 # Follow/Unfollow
-class SaveFriendView(APIView):
-        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-                
-        def post(request, self, pk,format=None):    
-            current_profile = self.user
-            other_profile = pk
-            current_profile.friends.add(other_profile)
 
-            return Response({"Requested" : "Save request has been sent!!"},status=status.HTTP_200_OK)
+
+class SaveFriendView(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def post(request, self, pk, format=None):
+        current_profile = self.user
+        other_profile = pk
+        current_profile.friends.add(other_profile)
+
+        return Response({"Requested": "Save request has been sent!!"}, status=status.HTTP_200_OK)
+
 
 class DeleteFriendView(APIView):
-        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-                
-        def delete(request, self, pk,format=None):    
-            current_profile = self.user
-            other_profile = pk
-            current_profile.friends.remove(other_profile)
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-            return Response({"Requested" : "Deleted!"},status=status.HTTP_200_OK)
+    def delete(request, self, pk, format=None):
+        current_profile = self.user
+        other_profile = pk
+        current_profile.friends.remove(other_profile)
+
+        return Response({"Requested": "Deleted!"}, status=status.HTTP_200_OK)
 
 
 class UserSearchResultsView(ListView):
     '''
-    This view utilizes a PostGres Full Text Search in order to return a 
+    This view utilizes a PostGres Full Text Search in order to return a
     list of users based on the string input in the UI form.
 
     This will search username, first name and last name of all users
@@ -95,7 +101,6 @@ class UserSearchResultsView(ListView):
         )
 
 
-
 class UserList(generics.ListAPIView):
     '''
     Return a list of all the users registered to use the application
@@ -112,3 +117,29 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     '''
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class GoogleAPICall(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(request, self, pk, format=None):
+        this_meal = Meal.objects.get(id=pk)
+
+        def get_restaurants():
+            print(this_meal)
+            url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20{this_meal.location}%20NorthCarolina&key=AIzaSyAZewudmulZF6W0C9MRW43XKIOyCFnxF8I"
+            response = requests.get(url)
+            data = response.json()
+            restaurants = data['results']
+            for i in restaurants:
+                restaurant_data = Restaurant(
+                    name=i['name'],
+                    formatted_address=i['formatted_address'],
+                    place_id=i['place_id'],
+                    business_status=i['business_status'],
+                    icon=i['icon'],
+                    meal=this_meal
+                )
+            restaurant_data.save()
+        get_restaurants()
+        return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)

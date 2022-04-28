@@ -21,6 +21,7 @@ django-on-heroku = "*"
 gunicorn = "*"
 pdbpp = "*"
 werkzeug = "*"
+responses = "*"
 
 [dev-packages]
 
