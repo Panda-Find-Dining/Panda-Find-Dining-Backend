@@ -53,7 +53,7 @@ https://find-dining-panda.herokuapp.com/
 |POST|[/api/follow/](#follow-user)|Follow (or friend) a new user|Yes|
 |DELETE|[/api/unfollow/](#unfollow-user)|Unfollow (or unfriend) a user|Yes|
 |GET|[/api/search/](#search-all-users)|Search all users and return list matching search|Yes|
-|GET|[/api/googleapicall/{meal_id}](#get-restaurants-for-meal)|Query Google Places API for restaurants matching parameters|Yes|
+|GET|[/api/googleapicall/{meal_pk}](#get-restaurants-for-meal)|Query Google Places API for restaurants matching parameters|Yes|
 
 
 
@@ -73,8 +73,7 @@ User must be logged in and authenticated with Token in header
 
 
 ```txt
-GET / api / search /  
-GET http://127.0.0.1:8000/api/search/?q=tyler HTTP/1.1
+GET / api / googleapicall / {meal_pk} 
 ```
 
 ### response
@@ -88,15 +87,9 @@ Vary: Accept
 
 ```json
 {
-  "id": 4,
-  "friends": [
-    2
-  ]
+  "Requested": "Restaurants Added"
 }
 ```
-
-
-
 
 
 
@@ -116,7 +109,8 @@ User must be logged in and authenticated with Token in header
 
 ```txt
 GET / api / search /  
-GET http://127.0.0.1:8000/api/search/?q=tyler HTTP/1.1
+GET http://127.0.0.1:8000/api/search/?q=tyler+galvin
+
 ```
 
 ### response

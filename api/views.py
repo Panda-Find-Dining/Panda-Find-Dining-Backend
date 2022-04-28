@@ -15,6 +15,7 @@ from django.conf import settings
 import responses
 import googlemaps
 import requests
+from findDining.settings import GOOGLE_MAPS_API_KEY as google_api_key
 
 
 class MealViewSet(ModelViewSet):
@@ -128,7 +129,7 @@ class GoogleAPICall(APIView):
 
         def get_restaurants():
             print(this_meal)
-            url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20{this_meal.location}%20NorthCarolina&key=AIzaSyAZewudmulZF6W0C9MRW43XKIOyCFnxF8I"
+            url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants%20in%20{this_meal.location}%20NorthCarolina&key={google_api_key}"
             response = requests.get(url)
             data = response.json()
             restaurants = data['results']
