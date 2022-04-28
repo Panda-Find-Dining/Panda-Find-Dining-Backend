@@ -140,6 +140,6 @@ class GoogleAPICall(APIView):
                     icon=i['icon'],
                     meal=this_meal
                 )
-            restaurant_data.save()
+                restaurant_data.save()
         get_restaurants()
         return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)
