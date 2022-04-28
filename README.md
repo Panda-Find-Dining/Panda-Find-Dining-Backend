@@ -52,6 +52,92 @@ https://find-dining-panda.herokuapp.com/
 |POST|[/api/users/](#get-list-of-all-users)|Get list of all users|Yes|
 |POST|[/api/follow/](#follow-user)|Follow (or friend) a new user|Yes|
 |DELETE|[/api/unfollow/](#unfollow-user)|Unfollow (or unfriend) a user|Yes|
+|GET|[/api/search/](#search-all-users)|Search all users and return list matching search|Yes|
+|GET|[/api/googleapicall/{meal_id}](#get-restaurants-for-meal)|Query Google Places API for restaurants matching parameters|Yes|
+
+
+
+
+<!-------------------------- Query Google for Restaurants ------------------------------>
+
+## Get restaurants for meal
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / search /  
+GET http://127.0.0.1:8000/api/search/?q=tyler HTTP/1.1
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "id": 4,
+  "friends": [
+    2
+  ]
+}
+```
+
+
+
+
+
+
+<!-------------------------- Search all users  ------------------------------>
+
+## Search All Users
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / search /  
+GET http://127.0.0.1:8000/api/search/?q=tyler HTTP/1.1
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "id": 4,
+  "friends": [
+    2
+  ]
+}
+```
+
+
 
 
 <!-------------------------- Unfollow or Unfriend a User  ------------------------------>

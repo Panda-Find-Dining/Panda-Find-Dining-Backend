@@ -11,6 +11,7 @@ from .permissions import IsOwnerOrReadOnly
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.views.generic.list import ListView
 from rest_framework.generics import ListAPIView
+from django.conf import settings
 import responses
 import googlemaps
 import requests
@@ -141,5 +142,7 @@ class GoogleAPICall(APIView):
                     meal=this_meal
                 )
                 restaurant_data.save()
+
         get_restaurants()
+        
         return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)
