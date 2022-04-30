@@ -58,7 +58,6 @@ class UserSearchView(generics.ListAPIView):
 
 # Follow/Unfollow
 
-
 class SaveFriendView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -147,3 +146,4 @@ class GoogleAPICall(APIView):
         get_restaurants()
         
         return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)
+
