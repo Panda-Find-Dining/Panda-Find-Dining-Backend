@@ -2,11 +2,13 @@ from .models import Restaurant, Meal, User
 from rest_framework import serializers
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserFriendSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the User model
     '''
+
     friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
+    friends_pk = serializers.PrimaryKeyRelatedField(source='friends', many=True, read_only=True)
 
     class Meta:
         model = User
@@ -14,6 +16,25 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             "username",
             "friends",
+            "friends_pk",
+        )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    '''
+    Serialize Data for the User model
+    '''
+    # friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
+    friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
+    friends_pk = serializers.PrimaryKeyRelatedField(source='friends', many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "friends",
+            "friends_pk"
         )
 
 

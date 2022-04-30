@@ -1,7 +1,7 @@
 from calendar import c
 from django.shortcuts import render
 from .models import User, Restaurant, Meal
-from .serializers import UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer
+from .serializers import UserFriendSerializer, UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -16,6 +16,7 @@ import responses
 import googlemaps
 import requests
 from findDining.settings import GOOGLE_MAPS_API_KEY as google_api_key
+from django.db.models import Q
 
 
 class MealViewSet(ModelViewSet):
@@ -147,18 +148,19 @@ class GoogleAPICall(APIView):
         
         return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)
 
-class UserFriendList(generics.ListAPIView):
+
+
+class UserFriendsList(generics.ListAPIView):
     '''
     Return a list of all a users friends as a slug
     '''
-    queryset = User.objects.all().filter(id=1)
-    serializer_class = UserSerializer
+    # queryset = User.objects.all()
+    serializer_class = UserFriendSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    # def get_queryset(self):
-    #     filters = Q(id=self.request.user)
-    #     return User.objects.filter(filters)
+    def get_queryset(self):
+        filters = Q(id=self.request.user.pk)
+        return User.objects.filter(filters)
     
     def perform_create(self, serializer):
-        # breakpoint()
         serializer.save(user=self.request.user)

@@ -36,5 +36,5 @@ urlpatterns = [
     path('api/users/', views.UserList.as_view(), name='user-list'),
     path('api/users/<int:pk>/', views.UserDetailView.as_view(), name='user-list'),
     path('api/googleapicall/<int:pk>/',
-        views.GoogleAPICall.as_view(), name='google api call')
+        views.GoogleAPICall.as_view(), name='google api call'),
 ]
