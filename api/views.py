@@ -164,3 +164,23 @@ class UserFriendsList(generics.ListAPIView):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class Yes(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def post(request, self, pk,format=None):    
+            current_user = self.user
+            current_restaurant = Restaurant.objects.get(id=pk)
+            current_restaurant.yes.add(current_user)
+
+            return Response({"Requested" : "You have said YES to this restaurant!"},status=status.HTTP_200_OK)
+
+class No(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def post(request, self, pk,format=None):    
+            current_user = self.user
+            current_restaurant = Restaurant.objects.get(id=pk)
+            current_restaurant.no.add(current_user)
+
+            return Response({"Requested" : "You have said NO to this restaurant!"},status=status.HTTP_200_OK)

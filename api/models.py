@@ -41,8 +41,9 @@ class Restaurant(models.Model):
     hours = models.CharField(max_length=200, blank=True)
     business_status = models.CharField(max_length=200, blank=True)
     icon = models.URLField(blank=True)
-    meal = models.ForeignKey(
-        'Meal', on_delete=models.CASCADE, related_name="meal")
+    meal = models.ForeignKey('Meal', on_delete=models.CASCADE, related_name="meal")
+    yes= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_yes', blank=True)
+    no= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_no', blank=True)
 
     def __str__(self):
         return self.name
