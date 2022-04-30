@@ -37,4 +37,6 @@ urlpatterns = [
     path('api/users/<int:pk>/', views.UserDetailView.as_view(), name='user-list'),
     path('api/googleapicall/<int:pk>/',
         views.GoogleAPICall.as_view(), name='google api call'),
+    path('api/restaurants/yes/<int:pk>/', views.Yes.as_view(), name='user-list'),
+    path('api/restaurants/no/<int:pk>/', views.No.as_view(), name='user-list'),
 ]
