@@ -107,7 +107,6 @@ class UserList(generics.ListAPIView):
     '''
     Return a list of all the users registered to use the application
     '''
-    # breakpoint()
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -147,3 +146,19 @@ class GoogleAPICall(APIView):
         get_restaurants()
         
         return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)
+
+class UserFriendList(generics.ListAPIView):
+    '''
+    Return a list of all a users friends as a slug
+    '''
+    queryset = User.objects.all().filter(id=1)
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    # def get_queryset(self):
+    #     filters = Q(id=self.request.user)
+    #     return User.objects.filter(filters)
+    
+    def perform_create(self, serializer):
+        # breakpoint()
+        serializer.save(user=self.request.user)
