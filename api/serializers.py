@@ -6,7 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the User model
     '''
-    username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
+    friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
 
     class Meta:
         model = User
