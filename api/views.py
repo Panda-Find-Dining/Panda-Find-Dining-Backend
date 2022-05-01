@@ -262,11 +262,10 @@ class GreenZoneRestaurantList(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        meal = Meal.objects.all()
-        breakpoint()
-        # meal_attendee_count = 
+        restaurants = Restaurant.objects.filter(meal_id=3)
         
-        return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
+        return restaurants
+        # return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
 
 
 class asdfasdf(generics.ListAPIView):
@@ -284,4 +283,23 @@ class asdfasdf(generics.ListAPIView):
         serializer.save(user=self.request.user)
 
 
+class MealRestaurantList(generics.ListAPIView):
+    '''
+    Get a list of all the restaurants associated with a meal
+    '''
+    serializer_class = RestaurantSerializer
+    model = Restaurant
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
+    def get_queryset(self):
+        user = self.request.user
+
+        # breakpoint()
+        # self.kwargs['pk']
+        filter_parameters = Restaurant.objects.filter(Q(meal_id=self.kwargs['pk']))
+        
+        return filter_parameters
+        # return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
+    
