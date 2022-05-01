@@ -190,7 +190,8 @@ class GoogleAPICall(APIView):
                     place_id=i['place_id'],
                     business_status=i['business_status'],
                     icon=i['icon'],
-                    meal=this_meal
+                    meal=this_meal,
+                    # pic=i['photos'][0]
                 )
                 restaurant_data.save()
 
@@ -262,26 +263,27 @@ class GreenZoneRestaurantList(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        restaurants = Restaurant.objects.filter(meal_id=3)
+        # restaurants = Restaurant.objects.filter(meal_id=3)
+        # , yes_count=num_of_diners
+        yes_count = 2
+        num_of_diners = 6
+
+        greenzone_restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])[0]
+
+        # greenzone_restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'], yes_count=num_of_diners).first()
+        # results = greenzone_restaurants.yes.all().filter(yes_count=num_of_diners)  # 
+        # results = greenzone_restaurants.yes.all().filter(yes_count=num_of_diners)  # 
+        # breakpoint()
         
-        return restaurants
-        # return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
-
-
-class asdfasdf(generics.ListAPIView):
-    '''
-    Get a list of all the users Meals
-    '''
-    serializer_class = MealSerializer
-    model = Meal
-    
-    def get_queryset(self):
-        user = self.request.user
+        return greenzone_restaurants
         return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
-    
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
+
+
+# *********************************************************************************
+# ref
+# *********************************************************************************
+        
 
 class MealRestaurantList(generics.ListAPIView):
     '''
@@ -303,3 +305,22 @@ class MealRestaurantList(generics.ListAPIView):
         return filter_parameters
         # return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
     
+
+#example taken from: ====================================================================================
+
+#https://stackoverflow.com/questions/31681751/auto-calculation-on-a-field-in-a-model-in-django-restframework
+
+# class BillViewSet(viewsets.ModelViewSet):
+#     queryset = Bill.objects.all()
+
+#     def get_serializer_class(self, *args, **kwargs):        
+#         if self.request.method == 'POST' or self.request.method == 'PUT':
+#             return WriteBillSerializer
+#         return ReadBillSerializer
+
+#     def perform_create(self, serializer):
+#         hours = serializer.validated_data['hours'] # get the value of hours
+#         work_assignment_object = <get_the_workAssignmentID_fk_object_from_passed_url>
+#         payment_rate = work_assignment_object.paymentRate # get the value of 'paymentRate' from work assignment object
+#         total_payment = hours*payment_rate # calculate value of total payment
+#         serializer.save(total_payment=total_payment, workAssignmentID_fk=work_assignment_object) # pass the value of total payment to be saved and the work assignment object

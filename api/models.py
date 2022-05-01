@@ -43,12 +43,21 @@ class Restaurant(models.Model):
     business_status = models.CharField(max_length=200, blank=True)
     icon = models.URLField(blank=True)
     meal = models.ForeignKey('Meal', on_delete=models.CASCADE, related_name="meal")
+    yes_count = models.IntegerField(default=0)
     yes= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_yes', blank=True)
     no= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_no', blank=True)
+    pic = models.URLField(default='https://images.app.goo.gl/RDQtoViqEvvGQc587', max_length=5000)
 
     def __str__(self):
         return self.name
 
+    def yes_count(self):
+        restaurant_id_from_obj = self.id
+        restaurant = Restaurant.objects.get(id=restaurant_id_from_obj)
+        yes_count = restaurant.yes.all().count()
+        # breakpoint()
+        return yes_count
+        
 
 class Meal(models.Model):
     creator = models.ForeignKey(
@@ -64,3 +73,15 @@ class Meal(models.Model):
 
     def __str__(self):
         return self.location
+
+    @property
+    def num_of_diners(self):
+        
+        number_of_creators = 1
+        # num_invitees = 1     # get count by querying M2M table 'api_meal_invitee'
+        meal_id_from_self = self.id
+        meal = Meal.objects.get(id=meal_id_from_self)
+        number_of_people_invited = meal.invitee.all().count()
+        total_number_people_going_to_eat = number_of_people_invited + number_of_creators
+
+        return total_number_people_going_to_eat

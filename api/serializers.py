@@ -45,7 +45,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the Restaurant model
     '''
-    yes_count = serializers.SerializerMethodField()
+    yes_count = serializers.ReadOnlyField()
 
     class Meta:
         model = Restaurant
@@ -63,15 +63,16 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'yes_count',
             'yes',
             'no',
+            'pic',
         )        
 
-    def get_yes_count(self, obj):
-        restaurant_id_from_obj = obj.id
-        restaurant = Restaurant.objects.get(id=restaurant_id_from_obj)
-        yes_count = restaurant.yes.all().count()
-        # breakpoint()
+    # def get_yes_count(self, obj):
+    #     restaurant_id_from_obj = obj.id
+    #     restaurant = Restaurant.objects.get(id=restaurant_id_from_obj)
+    #     yes_count = restaurant.yes.all().count()
+    #     # breakpoint()
         
-        return yes_count
+    #     return yes_count
 
 
 
@@ -79,7 +80,7 @@ class MealSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the Meal model
     '''
-    num_of_diners = serializers.SerializerMethodField()
+    num_of_diners = serializers.ReadOnlyField()
 
     class Meta:
         model = Meal
@@ -96,21 +97,21 @@ class MealSerializer(serializers.ModelSerializer):
             # 'restaurant',
         )        
 
-    def get_num_of_diners(self, obj):
+    # def get_num_of_diners(self, obj):
         
-        number_of_creators = 1
-        # num_invitees = 1     # get count by querying M2M table 'api_meal_invitee'
+    #     number_of_creators = 1
+    #     # num_invitees = 1     # get count by querying M2M table 'api_meal_invitee'
         
-        meal_id_from_obj = obj.id
-        meal = Meal.objects.get(id=meal_id_from_obj)
+    #     meal_id_from_obj = obj.id
+    #     meal = Meal.objects.get(id=meal_id_from_obj)
         
-        number_of_people_invited = meal.invitee.all().count()
+    #     number_of_people_invited = meal.invitee.all().count()
         
-        total_number_people_going_to_eat = number_of_people_invited + number_of_creators
+    #     total_number_people_going_to_eat = number_of_people_invited + number_of_creators
 
-        # breakpoint()
+    #     # breakpoint()
         
-        return total_number_people_going_to_eat
+    #     return total_number_people_going_to_eat
 
 
 
