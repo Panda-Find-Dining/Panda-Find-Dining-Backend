@@ -55,8 +55,8 @@ https://find-dining-panda.herokuapp.com/
 |GET|[/api/search/](#search-all-users)|Search all users and return list matching search|Yes|
 |GET|[/api/googleapicall/{meal_pk}](#get-restaurants-for-meal)|Query Google Places API for restaurants matching parameters|Yes|
 |GET|[/api/users/meals/](#get-all-of-a-users-meals)|Get all of a users meals|Yes|
-|POST|[/api/restaurants/<int:pk>/yes/](#user-likes-restaurant)|User swipes right on a restaurant|Yes|
-|POST|[/api/restaurants/<int:pk>/no/](#user-dislikes-restaurant)|User swipes left on a restaurant|Yes|
+|POST|[/api/restaurants/{id}/yes/](#user-likes-restaurant)|User swipes right on a restaurant|Yes|
+|POST|[/api/restaurants/{id}/no/](#user-dislikes-restaurant)|User swipes left on a restaurant|Yes|
 |GET|[/api/restaurants/](#get-all-restaurants)|Get all restaurants stored in the application|Yes|
 
 

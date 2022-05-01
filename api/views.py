@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .models import User, Restaurant, Meal
 from .serializers import UserFriendSerializer, UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer
 from rest_framework.permissions import AllowAny
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions, generics, status
@@ -35,6 +35,8 @@ class MealViewSet(ModelViewSet):
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # breakpoint()
+
 
 
 class RestaurantViewSet(ModelViewSet):
@@ -225,7 +227,6 @@ class Yes(APIView):
             current_restaurant.yes.add(current_user)
 
             return Response({"Requested" : "You have said YES to this restaurant!"},status=status.HTTP_200_OK)
-            
 
 
 class No(APIView):
@@ -240,3 +241,47 @@ class No(APIView):
             current_restaurant.no.add(current_user)
 
             return Response({"Requested" : "You have said NO to this restaurant!"},status=status.HTTP_200_OK)
+
+
+
+
+# *****************************************************************************************************
+# Making a List of Safe Restaurant Choices
+# *****************************************************************************************************
+
+class GreenZoneRestaurantList(generics.ListAPIView):
+    '''
+    This Green Zone Restaurant List is made up of the safe places a group 
+    has agreed upon as restaurants they would like to eat at.
+    '''
+    serializer_class = RestaurantSerializer
+    model = Restaurant
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        user = self.request.user
+        meal = Meal.objects.all()
+        breakpoint()
+        # meal_attendee_count = 
+        
+        return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
+
+
+class asdfasdf(generics.ListAPIView):
+    '''
+    Get a list of all the users Meals
+    '''
+    serializer_class = MealSerializer
+    model = Meal
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+
