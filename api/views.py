@@ -17,6 +17,7 @@ import googlemaps
 import requests
 from findDining.settings import GOOGLE_MAPS_API_KEY as google_api_key
 from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class MealViewSet(ModelViewSet):
@@ -33,7 +34,24 @@ class MealViewSet(ModelViewSet):
     # breakpoint()
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
-    permission_class = [AllowAny]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class RestaurantViewSet(ModelViewSet):
+    '''
+    This ViewSet creates the following endpoints:
+
+    List all restaurants with answers:      GET / restaurants /
+    Retrieve a specific restaurant:         GET / restaurants / {id}
+    Add a new restaurant:                   POST / restaurants /
+    Update an existing restaurant:          PUT / restaurants / {id}
+    Update part of an existing restaurant:  PATCH / restaurants / {id}
+    Remove a restaurant:                    DELETE / restaurants / {id} /
+    '''
+    # breakpoint()
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 # Searching
@@ -57,9 +75,8 @@ class UserSearchView(generics.ListAPIView):
             queryset = queryset.filter(username__icontains=friend_username)
         return queryset
 
+
 # Follow/Unfollow
-
-
 class SaveFriendView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -121,6 +138,37 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
+class UserMealList(generics.ListAPIView):
+    '''
+    Get a list of all the users Meals
+    '''
+    serializer_class = MealSerializer
+    model = Meal
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class UserFriendsList(generics.ListAPIView):
+    '''
+    Return a list of all a users friends as a slug
+    '''
+    # queryset = User.objects.all()
+    serializer_class = UserFriendSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        filters = Q(id=self.request.user.pk)
+        return User.objects.filter(filters)
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
 class GoogleAPICall(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -149,7 +197,6 @@ class GoogleAPICall(APIView):
         return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)
 
 
-
 class UserFriendsList(generics.ListAPIView):
     '''
     Return a list of all a users friends as a slug
@@ -164,8 +211,12 @@ class UserFriendsList(generics.ListAPIView):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        
 
 class Yes(APIView):
+    '''
+    This view will post the current users name to the restaurants list of 'yes's'
+    '''
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def post(request, self, pk,format=None):    
@@ -174,8 +225,13 @@ class Yes(APIView):
             current_restaurant.yes.add(current_user)
 
             return Response({"Requested" : "You have said YES to this restaurant!"},status=status.HTTP_200_OK)
+            
+
 
 class No(APIView):
+    '''
+    This view will post the current users name to the restaurants list of 'no's'
+    '''
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def post(request, self, pk,format=None):    

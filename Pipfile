@@ -22,6 +22,7 @@ gunicorn = "*"
 pdbpp = "*"
 werkzeug = "*"
 responses = "*"
+django-filter = "*"
 
 [dev-packages]
 
