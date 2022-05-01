@@ -87,14 +87,19 @@ class MealSerializer(serializers.ModelSerializer):
 
     def get_num_of_diners(self, obj):
         
-        num_creators = 1
-        num_invitees = 1     # get count by querying M2M table 'api_meal_invitee'
+        number_of_creators = 1
+        # num_invitees = 1     # get count by querying M2M table 'api_meal_invitee'
         
-        # meal = Meal.objects.get(id=17)
-        # num_invitees = meal.invitee.all()
+        meal_id_from_obj = obj.id
+        meal = Meal.objects.get(id=meal_id_from_obj)
+        
+        number_of_people_invited = meal.invitee.all().count()
+        
+        total_number_people_going_to_eat = number_of_people_invited + number_of_creators
 
         # breakpoint()
-        return num_invitees + num_creators
+        
+        return total_number_people_going_to_eat
 
 
 
