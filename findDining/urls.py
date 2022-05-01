@@ -21,6 +21,7 @@ from django.urls import include
 
 router = routers.DefaultRouter()
 router.register(r'meals', views.MealViewSet)
+router.register(r'restaurants', views.RestaurantViewSet)
 
 
 urlpatterns = [
@@ -35,8 +36,10 @@ urlpatterns = [
     path('api/search/', views.UserSearchView.as_view(), name='search_results'),
     path('api/users/', views.UserList.as_view(), name='user-list'),
     path('api/users/<int:pk>/', views.UserDetailView.as_view(), name='user-list'),
+    # path('api/users/<int:pk>/meals/', views.UserMealList.as_view(), name='user-meal-list'),
+    path('api/users/meals/', views.UserMealList.as_view(), name='user-meal-list'),
     path('api/googleapicall/<int:pk>/',
         views.GoogleAPICall.as_view(), name='google api call'),
-    path('api/restaurants/yes/<int:pk>/', views.Yes.as_view(), name='user-list'),
-    path('api/restaurants/no/<int:pk>/', views.No.as_view(), name='user-list'),
+    path('api/restaurants/<int:pk>/yes/', views.Yes.as_view(), name='user-list'),
+    path('api/restaurants/<int:pk>/no/', views.No.as_view(), name='user-list'),
 ]
