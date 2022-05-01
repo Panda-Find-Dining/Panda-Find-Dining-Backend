@@ -53,9 +53,11 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'formatted_address',
             'place_id',
             'hours',
-            'business_statius',
+            'business_status',
             'icon',
             'meal',
+            'yes',
+            'no',
         )        
 
 

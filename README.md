@@ -54,6 +54,165 @@ https://find-dining-panda.herokuapp.com/
 |DELETE|[/api/unfollow/](#unfollow-user)|Unfollow (or unfriend) a user|Yes|
 |GET|[/api/search/](#search-all-users)|Search all users and return list matching search|Yes|
 |GET|[/api/googleapicall/{meal_pk}](#get-restaurants-for-meal)|Query Google Places API for restaurants matching parameters|Yes|
+|GET|[/api/users/meals/](#get-all-of-a-users-meals)|Get all of a users meals|Yes|
+|POST|[/api/restaurants/<int:pk>/yes/](#user-likes-restaurant)|User swipes right on a restaurant|Yes|
+|POST|[/api/restaurants/<int:pk>/no/](#user-dislikes-restaurant)|User swipes left on a restaurant|Yes|
+|GET|[/api/restaurants/](#get-all-restaurants)|Get all restaurants stored in the application|Yes|
+
+
+
+
+<!-------------------------- Get all Restaurants ------------------------------>
+
+
+## Get all restaurants
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+This request returns a list of all the restaurants stored in the database
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / restaurants /
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "Requested": "You have said NO to this restaurant!"
+}
+```
+
+
+
+
+
+
+<!-------------------------- User swipes right on restaurant ------------------------------>
+
+
+## User likes restaurant
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+When a user swipes right their name is added to the 'yes' list for the Restaurant instance shown.
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / restaurants / <int:pk> / yes /
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "Requested": "You have said YES to this restaurant!"
+}
+```
+
+
+
+<!-------------------------- Get Users Meals------------------------------>
+
+
+## Get all of a users meals
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+This enpoint will query all meals and return those where the user making
+the request has either created a meal or been invited.
+
+Results are sorted in reverse order by date created so newest are at the top
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / users / meals /
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+[
+  {
+    "id": 11,
+    "creator": 3,
+    "created_date": "2022-04-27T23:04:18.753222-05:00",
+    "invitee": [
+      2,
+      3,
+      4,
+      5,
+      1
+    ],
+    "location": "Cary, NC",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+  },
+  {
+    "id": 9,
+    "creator": 3,
+    "created_date": "2022-04-27T10:05:34.747593-05:00",
+    "invitee": [
+      1
+    ],
+    "location": "Cary, NC",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+  },
+  {
+    "id": 3,
+    "creator": 1,
+    "created_date": "2022-04-24T17:40:22.850266-05:00",
+    "invitee": [],
+    "location": "Raleigh",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+  }
+]
+```
 
 
 

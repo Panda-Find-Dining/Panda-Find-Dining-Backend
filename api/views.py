@@ -214,6 +214,9 @@ class UserFriendsList(generics.ListAPIView):
         
 
 class Yes(APIView):
+    '''
+    This view will post the current users name to the restaurants list of 'yes's'
+    '''
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def post(request, self, pk,format=None):    
@@ -226,6 +229,9 @@ class Yes(APIView):
 
 
 class No(APIView):
+    '''
+    This view will post the current users name to the restaurants list of 'no's'
+    '''
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def post(request, self, pk,format=None):    
