@@ -45,6 +45,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the Restaurant model
     '''
+    yes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -59,9 +60,19 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'business_status',
             'icon',
             'meal',
+            'yes_count',
             'yes',
             'no',
         )        
+
+    def get_yes_count(self, obj):
+        restaurant_id_from_obj = obj.id
+        restaurant = Restaurant.objects.get(id=restaurant_id_from_obj)
+        yes_count = restaurant.yes.all().count()
+        # breakpoint()
+        
+        return yes_count
+
 
 
 class MealSerializer(serializers.ModelSerializer):
