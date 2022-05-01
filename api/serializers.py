@@ -63,7 +63,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'yes_count',
             'yes',
             'no',
-            'pic',
+            'photo_reference',
         )        
 
     # def get_yes_count(self, obj):

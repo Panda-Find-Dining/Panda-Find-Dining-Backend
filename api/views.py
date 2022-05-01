@@ -191,7 +191,7 @@ class GoogleAPICall(APIView):
                     business_status=i['business_status'],
                     icon=i['icon'],
                     meal=this_meal,
-                    pic=i['photos'][0].html_attributions
+                    photo_reference=i['photos'][0]["photo_reference"]
                 )
                 restaurant_data.save()
 
