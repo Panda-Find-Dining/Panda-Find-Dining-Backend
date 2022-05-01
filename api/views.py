@@ -17,7 +17,7 @@ import googlemaps
 import requests
 from findDining.settings import GOOGLE_MAPS_API_KEY as google_api_key
 from django.db.models import Q
-# from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class MealViewSet(ModelViewSet):
@@ -144,18 +144,10 @@ class UserMealList(generics.ListAPIView):
     '''
     serializer_class = MealSerializer
     model = Meal
-    # filterset_class = MealFilter
-
-    # experiement to get all
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return Meal.objects.filter(creator_id=user)
-
     
-    # THIS ONE WORKS!!
     def get_queryset(self):
         user = self.request.user
-        return Meal.objects.filter(creator_id=user)
+        return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
