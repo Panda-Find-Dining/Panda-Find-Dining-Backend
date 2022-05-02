@@ -58,6 +58,147 @@ https://find-dining-panda.herokuapp.com/
 |POST|[/api/restaurants/{id}/yes/](#user-likes-restaurant)|User swipes right on a restaurant|Yes|
 |POST|[/api/restaurants/{id}/no/](#user-dislikes-restaurant)|User swipes left on a restaurant|Yes|
 |GET|[/api/restaurants/](#get-all-restaurants)|Get all restaurants stored in the application|Yes|
+|GET|[/api/meals/{int:pk}/matchlist/](#get-matched-restaurant-list)|Get the matched restaurant list|Yes|
+|GET|[/api/meals/{int:pk}/match/](#get-matched-restaurant)|Get the matched restaurant|Yes|
+
+
+
+
+<!-------------------------- Get the List of Matched Restaurants ------------------------------>
+
+
+## Get matched restaurant list
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+This request returns a list of the matched restaurants for a meal
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / meals / <int:meal_pk> / matchlist
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+[
+  {
+    "id": 21,
+    "name": "Lucky 32 Southern Kitchen",
+    "lat": null,
+    "lon": null,
+    "formatted_address": "7307 Tryon Rd, Cary, NC 27518, United States",
+    "place_id": "ChIJWeA5FtOMrIkRHIFlq2NMj3o",
+    "hours": "",
+    "business_status": "OPERATIONAL",
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "meal": 9,
+    "yes_count": 5,
+    "yes": [
+      2,
+      4,
+      5,
+      6,
+      1
+    ],
+    "no": [],
+    "pic": "https://images.app.goo.gl/RDQtoViqEvvGQc587"
+  },
+  {
+    "id": 27,
+    "name": "Enrigo Italian Bistro",
+    "lat": null,
+    "lon": null,
+    "formatted_address": "575 New Waverly Pl #106, Cary, NC 27518, United States",
+    "place_id": "ChIJwXi-ijPzrIkROYgjl8OQndE",
+    "hours": "",
+    "business_status": "OPERATIONAL",
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "meal": 9,
+    "yes_count": 5,
+    "yes": [
+      2,
+      4,
+      5,
+      6,
+      1
+    ],
+    "no": [],
+    "pic": "https://images.app.goo.gl/RDQtoViqEvvGQc587"
+  }
+]
+```
+
+
+
+<!-------------------------- Get the Matched Restaurant ------------------------------>
+
+
+## Get matched restaurant
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+This request returns the matched restaurant for a meal
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / meals / <int:meal_pk> / match
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+[
+  {
+    "id": 21,
+    "name": "Lucky 32 Southern Kitchen",
+    "lat": null,
+    "lon": null,
+    "formatted_address": "7307 Tryon Rd, Cary, NC 27518, United States",
+    "place_id": "ChIJWeA5FtOMrIkRHIFlq2NMj3o",
+    "hours": "",
+    "business_status": "OPERATIONAL",
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "meal": 9,
+    "yes_count": 5,
+    "yes": [
+      2,
+      4,
+      5,
+      6,
+      1
+    ],
+    "no": [],
+    "pic": "https://images.app.goo.gl/RDQtoViqEvvGQc587"
+  }
+]
+```
 
 
 
