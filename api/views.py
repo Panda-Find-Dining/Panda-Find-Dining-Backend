@@ -16,7 +16,7 @@ import responses
 import googlemaps
 import requests
 from findDining.settings import GOOGLE_MAPS_API_KEY as google_api_key
-from django.db.models import Q
+from django.db.models import Q, Count
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -250,9 +250,9 @@ class No(APIView):
 # Making a List of Safe Restaurant Choices
 # *****************************************************************************************************
 
-class GreenZoneRestaurantList(generics.ListAPIView):
+class MatchedRestaurantList(generics.ListAPIView):
     '''
-    This Green Zone Restaurant List is made up of the safe places a group 
+    This list is made up of the places a group of users in a meal 
     has agreed upon as restaurants they would like to eat at.
     '''
     serializer_class = RestaurantSerializer
@@ -262,28 +262,41 @@ class GreenZoneRestaurantList(generics.ListAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        user = self.request.user
-        # restaurants = Restaurant.objects.filter(meal_id=3)
-        # , yes_count=num_of_diners
-        yes_count = 2
-        num_of_diners = 6
-
-        greenzone_restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])[0]
-
-        # greenzone_restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'], yes_count=num_of_diners).first()
-        # results = greenzone_restaurants.yes.all().filter(yes_count=num_of_diners)  # 
-        # results = greenzone_restaurants.yes.all().filter(yes_count=num_of_diners)  # 
-        # breakpoint()
+        restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])
+        meal = Meal.objects.get(id=self.kwargs['pk'])
+        number_diners = meal.invitee.all().count()
         
-        return greenzone_restaurants
-        return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
-
-
-
-# *********************************************************************************
-# ref
-# *********************************************************************************
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=number_diners)
         
+        return greenzone_queryset
+
+        
+class RestaurantMatchView(generics.ListAPIView):
+    '''
+    This view retrieves a queryset with a single value for the matched restaurant
+    '''
+    serializer_class = RestaurantSerializer
+    model = Restaurant
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])
+        meal = Meal.objects.get(id=self.kwargs['pk'])
+        number_diners = meal.invitee.all().count()
+        
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=number_diners)
+        
+        # logic for selecting a restaurant from the GreenZone list ===================================
+        # get pk of first matched restaurant
+        match_pk = greenzone_queryset[0].id
+
+        # filter greenzone list by the pk of the first match
+        match_queryset = greenzone_queryset.filter(id=match_pk)
+        
+        return match_queryset
+
 
 class MealRestaurantList(generics.ListAPIView):
     '''
