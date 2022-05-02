@@ -47,6 +47,7 @@ class Restaurant(models.Model):
     yes= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_yes', blank=True)
     no= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_no', blank=True)
     photo_reference = models.CharField(blank=True, max_length=1000)
+    user_has_selected = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_has_selected', blank=True)
 
     def __str__(self):
         return self.name

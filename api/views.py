@@ -319,21 +319,16 @@ class MealRestaurantList(generics.ListAPIView):
         # return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
     
 
-#example taken from: ====================================================================================
+class UserSelectedView(APIView):
+    '''
+    This view will post the current users name to the restaurants list of 'yes's'
+    '''
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-#https://stackoverflow.com/questions/31681751/auto-calculation-on-a-field-in-a-model-in-django-restframework
+    def post(request, self, pk,format=None):    
+            current_user = self.user
+            current_meal = Meal.objects.get(id=pk)
+            current_meal.yes.add(current_user)
 
-# class BillViewSet(viewsets.ModelViewSet):
-#     queryset = Bill.objects.all()
+            return Response({"Requested" : "You have updated your selection status for this meal"},status=status.HTTP_200_OK)
 
-#     def get_serializer_class(self, *args, **kwargs):        
-#         if self.request.method == 'POST' or self.request.method == 'PUT':
-#             return WriteBillSerializer
-#         return ReadBillSerializer
-
-#     def perform_create(self, serializer):
-#         hours = serializer.validated_data['hours'] # get the value of hours
-#         work_assignment_object = <get_the_workAssignmentID_fk_object_from_passed_url>
-#         payment_rate = work_assignment_object.paymentRate # get the value of 'paymentRate' from work assignment object
-#         total_payment = hours*payment_rate # calculate value of total payment
-#         serializer.save(total_payment=total_payment, workAssignmentID_fk=work_assignment_object) # pass the value of total payment to be saved and the work assignment object
