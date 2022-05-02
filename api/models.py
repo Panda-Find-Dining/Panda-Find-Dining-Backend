@@ -46,7 +46,7 @@ class Restaurant(models.Model):
     yes_count = models.IntegerField(default=0)
     yes= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_yes', blank=True)
     no= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_no', blank=True)
-    pic = models.URLField(default='https://images.app.goo.gl/RDQtoViqEvvGQc587', max_length=5000)
+    photo_reference = models.CharField(blank=True, max_length=1000)
 
     def __str__(self):
         return self.name
