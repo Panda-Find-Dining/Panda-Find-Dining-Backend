@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/unfollow/<int:pk>/', views.DeleteFriendView.as_view()),
     path('api/search/', views.UserSearchView.as_view(), name='search_results'),
     path('api/users/', views.UserList.as_view(), name='user-list'),
+    path('api/users/friends/', views.UserFriendsList.as_view(), name='user-friend-list'),
     path('api/users/<int:pk>/', views.UserDetailView.as_view(), name='user-list'),
     path('api/users/meals/', views.UserMealList.as_view(), name='user-meal-list'),
     path('api/googleapicall/<int:pk>/',
@@ -41,6 +42,7 @@ urlpatterns = [
     path('api/restaurants/<int:pk>/no/', views.No.as_view(), name='user-list'),
     path('api/meals/<int:pk>/match/', views.RestaurantMatchView.as_view(), name='matched-restaurant'),
     path('api/meals/<int:pk>/matchlist/', views.MatchedRestaurantList.as_view(), name='greenzone-list'),
-    path('api/meals/<int:pk>/restaurants/', views.MealRestaurantList.as_view(), name='meal-restaurant-list')
+    path('api/meals/<int:pk>/restaurants/', views.MealRestaurantList.as_view(), name='meal-restaurant-list'),
+    path('api/meals/<int:pk>/user_selected/', views.UserSelectedView.as_view(), name='user-has-selected'),
 
 ]
