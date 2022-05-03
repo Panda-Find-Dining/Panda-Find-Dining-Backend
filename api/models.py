@@ -69,7 +69,7 @@ class Meal(models.Model):
     radius = models.IntegerField(blank=True, null=True)
     lat = models.FloatField(blank=True, null=True)
     lon = models.FloatField(blank=True, null=True)
-    user_has_selected = models.BooleanField(default=False)
+    user_has_selected = models.BooleanField(default=False, blank=True, null=True)
     friends_have_selected = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_has_selected', blank=True)
     # restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")
 
