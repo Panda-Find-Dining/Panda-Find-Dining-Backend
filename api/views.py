@@ -202,9 +202,8 @@ class GoogleAPICall(APIView):
 
 class UserFriendsList(generics.ListAPIView):
     '''
-    Return a list of all a users friends as a slug
+    Return a list of all of a users friends 
     '''
-    # queryset = User.objects.all()
     serializer_class = UserFriendSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 

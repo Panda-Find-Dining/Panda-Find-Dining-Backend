@@ -24,11 +24,8 @@ class UserSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the User model
     '''
-    # friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
     friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
     friends_pk = serializers.PrimaryKeyRelatedField(source='friends', many=True, read_only=True)
-    # num_of_diners = serializers.Field(source='num_of_diners')
-    # num_of_diners = 5
 
     class Meta:
         model = User
@@ -64,6 +61,8 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'yes',
             'no',
             'photo_reference',
+            # 'user_has_selected',
+            # 'friends_have_selected',
         )        
 
     # def get_yes_count(self, obj):

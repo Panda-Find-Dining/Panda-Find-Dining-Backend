@@ -47,7 +47,6 @@ class Restaurant(models.Model):
     yes= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_yes', blank=True)
     no= models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='voted_no', blank=True)
     photo_reference = models.CharField(blank=True, max_length=1000)
-    user_has_selected = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_has_selected', blank=True)
 
     def __str__(self):
         return self.name
@@ -70,6 +69,8 @@ class Meal(models.Model):
     radius = models.IntegerField(blank=True, null=True)
     lat = models.FloatField(blank=True, null=True)
     lon = models.FloatField(blank=True, null=True)
+    user_has_selected = models.BooleanField(default=False)
+    friends_have_selected = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_has_selected', blank=True)
     # restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")
 
     def __str__(self):
