@@ -357,15 +357,19 @@ class Match(generics.ListAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-# class DeclineMeal(APIView):
-#         permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-                
-#         def delete(request, self, pk,format=None):    
-#             current_meal = self.user
-#             other_profile = pk
-#             current_meal.invitee.remove(other_profile)
+class DeclineMeal(APIView):
+    '''
 
-#             return Response({"Requested" : "You have been removed from this meal!"},status=status.HTTP_200_OK)
+    '''
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+                
+    def delete(request, self, pk,format=None):    
+        current_user = self.user
+        current_meal = Meal.objects.get(id=pk)
+        current_user.invitee.remove(current_meal)
+
+        return Response({"Requested" : "pee pee poo poo!"},status=status.HTTP_200_OK)
 
 class UndoYes(APIView):
     '''
@@ -379,7 +383,7 @@ class UndoYes(APIView):
         current_restaurant = Restaurant.objects.get(id=pk)
         current_user.voted_yes.remove(current_restaurant)
 
-        return Response({"Requested" : "pee pee poo poo!"},status=status.HTTP_200_OK)
+        return Response({"Requested" : "You have changed your mind from yes!"},status=status.HTTP_200_OK)
 
 class UndoNo(APIView):
     '''
