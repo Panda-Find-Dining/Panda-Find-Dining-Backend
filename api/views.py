@@ -331,3 +331,34 @@ class UserSelectedView(APIView):
 
             return Response({"Requested" : "You have updated your selection status for this meal"},status=status.HTTP_200_OK)
 
+class Pending(generics.ListAPIView):
+
+    serializer_class = MealSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+    def get_queryset(self):
+        pending= Meal.objects.filter(match=False)
+        return pending
+
+class Match(generics.ListAPIView):
+
+    serializer_class = MealSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+    def get_queryset(self):
+        match= Meal.objects.filter(match=True)
+        return match
+
+class DeclineMeal(APIView):
+        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+                
+        def delete(request, self, pk,format=None):    
+            current_meal = self.user
+            other_profile = pk
+            current_meal.invitee.remove(other_profile)
+
+            return Response({"Requested" : "You have been removed from this meal!"},status=status.HTTP_200_OK)
+
+
