@@ -44,5 +44,7 @@ urlpatterns = [
     path('api/meals/<int:pk>/matchlist/', views.MatchedRestaurantList.as_view(), name='greenzone-list'),
     path('api/meals/<int:pk>/restaurants/', views.MealRestaurantList.as_view(), name='meal-restaurant-list'),
     path('api/meals/<int:pk>/user_selected/', views.UserSelectedView.as_view(), name='user-has-selected'),
-
+    path('api/pending/', views.Pending.as_view(), name='pending'),
+    path('api/match/', views.Match.as_view(), name='match'),
+    path('api/decline/<int:pk>/', views.DeclineMeal.as_view(), name='Decline-Meal'),
 ]

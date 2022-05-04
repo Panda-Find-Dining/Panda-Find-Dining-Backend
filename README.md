@@ -60,6 +60,9 @@ https://find-dining-panda.herokuapp.com/
 |GET|[/api/restaurants/](#get-all-restaurants)|Get all restaurants stored in the application|Yes|
 |GET|[/api/meals/{int:pk}/matchlist/](#get-matched-restaurant-list)|Get the matched restaurant list|Yes|
 |GET|[/api/meals/{int:pk}/match/](#get-matched-restaurant)|Get the matched restaurant|Yes|
+|GET|[/api/pending/](#get-pending-status)|Show if pending status is False|Yes|
+|GET|[/api/match/](#get-matched-status)|Show if the match status is True|Yes|
+
 
 
 
