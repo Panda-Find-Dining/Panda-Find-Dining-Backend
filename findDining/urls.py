@@ -49,5 +49,6 @@ urlpatterns = [
     path('api/decline/<int:pk>/', views.DeclineMeal.as_view(), name='decline-meal'),
     path('api/undo_yes/<int:pk>/', views.UndoYes.as_view(), name='undo-yes'),
     path('api/undo_no/<int:pk>/', views.UndoNo.as_view(), name='undo-no'),
+    path('api/selected-and-match/<int:pk>/', views.SelectedAndMatch.as_view(), name='selected-and-match'),
 
 ]

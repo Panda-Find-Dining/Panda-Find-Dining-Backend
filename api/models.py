@@ -78,6 +78,8 @@ class Meal(models.Model):
         settings.AUTH_USER_MODEL, related_name='user_has_selected', blank=True)
     match = models.BooleanField(blank=True, null=True, default=False)
     archive = models.BooleanField(blank=True, null=True, default=False)
+    all_users_have_selected = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='all_users_have_selected', blank=True)
     # restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")
 
     def __str__(self):
