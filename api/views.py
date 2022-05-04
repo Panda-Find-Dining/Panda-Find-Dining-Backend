@@ -373,8 +373,13 @@ class DeclineMeal(APIView):
 
     def delete(request, self, pk, format=None):
         current_user = self.user
+        current_meal_creator = self.user.pk
         current_meal = Meal.objects.get(id=pk)
         current_user.invitee.remove(current_meal)
+
+        if current_meal.creator.pk == current_meal_creator:
+            current_meal.archive = True
+            current_meal.save()
 
         return Response({"Requested": "pee pee poo poo!"}, status=status.HTTP_200_OK)
 
