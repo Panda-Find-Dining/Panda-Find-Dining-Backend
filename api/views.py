@@ -38,7 +38,6 @@ class MealViewSet(ModelViewSet):
     # breakpoint()
 
 
-
 class RestaurantViewSet(ModelViewSet):
     '''
     This ViewSet creates the following endpoints:
@@ -146,11 +145,11 @@ class UserMealList(generics.ListAPIView):
     '''
     serializer_class = MealSerializer
     model = Meal
-    
+
     def get_queryset(self):
         user = self.request.user
         return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -166,7 +165,7 @@ class UserFriendsList(generics.ListAPIView):
     def get_queryset(self):
         filters = Q(id=self.request.user.pk)
         return User.objects.filter(filters)
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -196,7 +195,7 @@ class GoogleAPICall(APIView):
                 restaurant_data.save()
 
         get_restaurants()
-        
+
         return Response({"Requested": "Restaurants Added"}, status=status.HTTP_200_OK)
 
 
@@ -210,10 +209,10 @@ class UserFriendsList(generics.ListAPIView):
     def get_queryset(self):
         filters = Q(id=self.request.user.pk)
         return User.objects.filter(filters)
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-        
+
 
 class Yes(APIView):
     '''
@@ -221,12 +220,12 @@ class Yes(APIView):
     '''
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def post(request, self, pk,format=None):    
-            current_user = self.user
-            current_restaurant = Restaurant.objects.get(id=pk)
-            current_restaurant.yes.add(current_user)
+    def post(request, self, pk, format=None):
+        current_user = self.user
+        current_restaurant = Restaurant.objects.get(id=pk)
+        current_restaurant.yes.add(current_user)
 
-            return Response({"Requested" : "You have said YES to this restaurant!"},status=status.HTTP_200_OK)
+        return Response({"Requested": "You have said YES to this restaurant!"}, status=status.HTTP_200_OK)
 
 
 class No(APIView):
@@ -235,14 +234,12 @@ class No(APIView):
     '''
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def post(request, self, pk,format=None):    
-            current_user = self.user
-            current_restaurant = Restaurant.objects.get(id=pk)
-            current_restaurant.no.add(current_user)
+    def post(request, self, pk, format=None):
+        current_user = self.user
+        current_restaurant = Restaurant.objects.get(id=pk)
+        current_restaurant.no.add(current_user)
 
-            return Response({"Requested" : "You have said NO to this restaurant!"},status=status.HTTP_200_OK)
-
-
+        return Response({"Requested": "You have said NO to this restaurant!"}, status=status.HTTP_200_OK)
 
 
 # *****************************************************************************************************
@@ -264,12 +261,13 @@ class MatchedRestaurantList(generics.ListAPIView):
         restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])
         meal = Meal.objects.get(id=self.kwargs['pk'])
         number_diners = meal.invitee.all().count()
-        
-        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=number_diners)
-        
+
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count(
+            'yes')).filter(restaurant_yes_count=number_diners)
+
         return greenzone_queryset
 
-        
+
 class RestaurantMatchView(generics.ListAPIView):
     '''
     This view retrieves a queryset with a single value for the matched restaurant
@@ -284,16 +282,17 @@ class RestaurantMatchView(generics.ListAPIView):
         restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])
         meal = Meal.objects.get(id=self.kwargs['pk'])
         number_diners = meal.invitee.all().count()
-        
-        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=number_diners)
-        
+
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count(
+            'yes')).filter(restaurant_yes_count=number_diners)
+
         # logic for selecting a restaurant from the GreenZone list ===================================
         # get pk of first matched restaurant
         match_pk = greenzone_queryset[0].id
 
         # filter greenzone list by the pk of the first match
         match_queryset = greenzone_queryset.filter(id=match_pk)
-        
+
         return match_queryset
 
 
@@ -303,7 +302,7 @@ class MealRestaurantList(generics.ListAPIView):
     '''
     serializer_class = RestaurantSerializer
     model = Restaurant
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -312,11 +311,12 @@ class MealRestaurantList(generics.ListAPIView):
 
         # breakpoint()
         # self.kwargs['pk']
-        filter_parameters = Restaurant.objects.filter(Q(meal_id=self.kwargs['pk']))
-        
+        filter_parameters = Restaurant.objects.filter(
+            Q(meal_id=self.kwargs['pk']))
+
         return filter_parameters
         # return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
-    
+
 
 class UserSelectedView(APIView):
     '''
@@ -324,38 +324,45 @@ class UserSelectedView(APIView):
     '''
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def post(request, self, pk,format=None):    
-            current_user = self.user
-            current_meal = Meal.objects.get(id=pk)
-            current_meal.yes.add(current_user)
+    def post(request, self, pk, format=None):
+        current_user = self.user
+        current_meal = Meal.objects.get(id=pk)
+        current_meal.yes.add(current_user)
 
-            return Response({"Requested" : "You have updated your selection status for this meal"},status=status.HTTP_200_OK)
+        return Response({"Requested": "You have updated your selection status for this meal"}, status=status.HTTP_200_OK)
+
 
 class Pending(generics.ListAPIView):
 
     serializer_class = MealSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    # match=False, invitee__pk=self.request.user.id
 
     def get_queryset(self):
-        pending= Meal.objects.filter(match=False)
+        filters = (Q(creator=self.request.user) | Q(
+            invitee__pk=self.request.user.pk)) & Q(match=False)
+        pending = Meal.objects.filter(filters).distinct()
         return pending
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
 
 class Match(generics.ListAPIView):
 
     serializer_class = MealSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-
     def get_queryset(self):
-        match= Meal.objects.filter(match=True)
+        filters = (Q(creator=self.request.user) | Q(
+            invitee__pk=self.request.user.pk)) & Q(match=True)
+        match = Meal.objects.filter(filters).distinct()
         return match
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
 
 class DeclineMeal(APIView):
     '''
@@ -363,13 +370,14 @@ class DeclineMeal(APIView):
     '''
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-                
-    def delete(request, self, pk,format=None):    
+
+    def delete(request, self, pk, format=None):
         current_user = self.user
         current_meal = Meal.objects.get(id=pk)
         current_user.invitee.remove(current_meal)
 
-        return Response({"Requested" : "pee pee poo poo!"},status=status.HTTP_200_OK)
+        return Response({"Requested": "pee pee poo poo!"}, status=status.HTTP_200_OK)
+
 
 class UndoYes(APIView):
     '''
@@ -377,13 +385,14 @@ class UndoYes(APIView):
     '''
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-                
-    def delete(request, self, pk,format=None):    
+
+    def delete(request, self, pk, format=None):
         current_user = self.user
         current_restaurant = Restaurant.objects.get(id=pk)
         current_user.voted_yes.remove(current_restaurant)
 
-        return Response({"Requested" : "You have changed your mind from yes!"},status=status.HTTP_200_OK)
+        return Response({"Requested": "You have changed your mind from yes!"}, status=status.HTTP_200_OK)
+
 
 class UndoNo(APIView):
     '''
@@ -391,19 +400,17 @@ class UndoNo(APIView):
     '''
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-                
-    def delete(request, self, pk,format=None):    
+
+    def delete(request, self, pk, format=None):
         current_user = self.user
         current_restaurant = Restaurant.objects.get(id=pk)
         current_user.voted_no.remove(current_restaurant)
 
-        return Response({"Requested" : "You have changed your mind from no!"},status=status.HTTP_200_OK)
+        return Response({"Requested": "You have changed your mind from no!"}, status=status.HTTP_200_OK)
 
+    def post(request, self, pk, format=None):
+        current_user = self.user
+        current_restaurant = Restaurant.objects.get(id=pk)
+        current_restaurant.yes.add(current_user)
 
-    def post(request, self, pk,format=None):    
-            current_user = self.user
-            current_restaurant = Restaurant.objects.get(id=pk)
-            current_restaurant.yes.add(current_user)
-
-            return Response({"Requested" : "You have said YES to this restaurant!"},status=status.HTTP_200_OK)
-
+        return Response({"Requested": "You have said YES to this restaurant!"}, status=status.HTTP_200_OK)
