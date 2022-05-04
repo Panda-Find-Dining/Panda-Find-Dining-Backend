@@ -71,7 +71,7 @@ class Meal(models.Model):
     lon = models.FloatField(blank=True, null=True)
     user_has_selected = models.BooleanField(default=False, blank=True, null=True)
     friends_have_selected = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='user_has_selected', blank=True)
-    match = models.BooleanField(blank=True, null=True)
+    match = models.BooleanField(blank=True, null=True, default=False)
     # restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")
 
     def __str__(self):
