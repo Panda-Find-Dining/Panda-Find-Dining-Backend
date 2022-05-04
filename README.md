@@ -64,6 +64,8 @@ https://find-dining-panda.herokuapp.com/
 |GET|[/api/match/](#get-matched-status)|Show if the match status is True|Yes|
 |DELETE|[/api/undo_yes/{int:pk}/](#undo-yes)|Undo a yes selection|Yes|
 |DELETE|[/api/undo_no/{int:pk}/](#undo-no)|Undo a no selection|Yes|
+|DELETE|[/api/decline/{int:pk}/](#decline)|Removes invitee from meal|Yes|
+
 
 
 

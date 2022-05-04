@@ -46,7 +46,7 @@ urlpatterns = [
     path('api/meals/<int:pk>/user_selected/', views.UserSelectedView.as_view(), name='user-has-selected'),
     path('api/pending/', views.Pending.as_view(), name='pending'),
     path('api/match/', views.Match.as_view(), name='match'),
-    # path('api/decline/<int:pk>/', views.DeclineMeal.as_view(), name='Decline-Meal'),
+    path('api/decline/<int:pk>/', views.DeclineMeal.as_view(), name='decline-meal'),
     path('api/undo_yes/<int:pk>/', views.UndoYes.as_view(), name='undo-yes'),
     path('api/undo_no/<int:pk>/', views.UndoNo.as_view(), name='undo-no'),
 
