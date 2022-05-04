@@ -62,6 +62,9 @@ https://find-dining-panda.herokuapp.com/
 |GET|[/api/meals/{int:pk}/match/](#get-matched-restaurant)|Get the matched restaurant|Yes|
 |GET|[/api/pending/](#get-pending-status)|Show if pending status is False|Yes|
 |GET|[/api/match/](#get-matched-status)|Show if the match status is True|Yes|
+|DELETE|[/api/undo_yes/{int:pk}/](#undo-yes)|Undo a yes selection|Yes|
+|DELETE|[/api/undo_no/{int:pk}/](#undo-no)|Undo a no selection|Yes|
+
 
 
 

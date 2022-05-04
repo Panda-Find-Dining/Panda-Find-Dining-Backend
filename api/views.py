@@ -340,6 +340,9 @@ class Pending(generics.ListAPIView):
     def get_queryset(self):
         pending= Meal.objects.filter(match=False)
         return pending
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class Match(generics.ListAPIView):
 
@@ -351,14 +354,52 @@ class Match(generics.ListAPIView):
         match= Meal.objects.filter(match=True)
         return match
 
-class DeclineMeal(APIView):
-        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+# class DeclineMeal(APIView):
+#         permission_classes = [permissions.IsAuthenticatedOrReadOnly]
                 
-        def delete(request, self, pk,format=None):    
-            current_meal = self.user
-            other_profile = pk
-            current_meal.invitee.remove(other_profile)
+#         def delete(request, self, pk,format=None):    
+#             current_meal = self.user
+#             other_profile = pk
+#             current_meal.invitee.remove(other_profile)
 
-            return Response({"Requested" : "You have been removed from this meal!"},status=status.HTTP_200_OK)
+#             return Response({"Requested" : "You have been removed from this meal!"},status=status.HTTP_200_OK)
 
+class UndoYes(APIView):
+    '''
+
+    '''
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+                
+    def delete(request, self, pk,format=None):    
+        current_user = self.user
+        current_restaurant = Restaurant.objects.get(id=pk)
+        current_user.voted_yes.remove(current_restaurant)
+
+        return Response({"Requested" : "pee pee poo poo!"},status=status.HTTP_200_OK)
+
+class UndoNo(APIView):
+    '''
+
+    '''
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+                
+    def delete(request, self, pk,format=None):    
+        current_user = self.user
+        current_restaurant = Restaurant.objects.get(id=pk)
+        current_user.voted_no.remove(current_restaurant)
+
+        return Response({"Requested" : "You have changed your mind from no!"},status=status.HTTP_200_OK)
+
+
+    def post(request, self, pk,format=None):    
+            current_user = self.user
+            current_restaurant = Restaurant.objects.get(id=pk)
+            current_restaurant.yes.add(current_user)
+
+            return Response({"Requested" : "You have said YES to this restaurant!"},status=status.HTTP_200_OK)
 
