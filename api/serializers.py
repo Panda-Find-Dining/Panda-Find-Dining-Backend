@@ -100,6 +100,7 @@ class MealSerializer(serializers.ModelSerializer):
             'user_has_selected',
             'friends_have_selected',
             'archive',
+            'all_users_have_selected',
             # 'restaurant',
         )
 
