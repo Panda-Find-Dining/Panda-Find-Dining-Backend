@@ -18,6 +18,22 @@ import requests
 from findDining.settings import GOOGLE_MAPS_API_KEY as google_api_key
 from django.db.models import Q, Count
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+
+
+class TokenObtainView(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        custom_response = {
+            'token': token.key,
+            'user_id': user.id
+        }
+        return Response(custom_response)
 
 
 class MealViewSet(ModelViewSet):
