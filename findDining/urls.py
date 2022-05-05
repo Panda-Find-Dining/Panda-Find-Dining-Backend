@@ -57,7 +57,7 @@ urlpatterns = [
     path('api/undo_no/<int:pk>/', views.UndoNo.as_view(), name='undo-no'),
     path('api/selected-and-match/<int:pk>/',
          views.SelectedAndMatch.as_view(), name='selected-and-match'),
-    path('api/to/your/custom/token/view/',
+    path('api/tokenpk/',
          views.TokenObtainView.as_view(), name='new-token,obtain-view')
 
 
