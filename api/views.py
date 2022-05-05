@@ -445,7 +445,7 @@ class SelectedAndMatch(APIView):
         current_meal.all_users_have_selected.add(current_user)
         current_meal.save()
         select_count = current_meal.all_users_have_selected.count()
-        if select_count == 2:
+        if select_count == (current_meal.invitee.count() + 1):
             current_meal.match = True
             current_meal.save()
 
