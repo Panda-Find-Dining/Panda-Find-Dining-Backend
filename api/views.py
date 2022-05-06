@@ -298,9 +298,9 @@ class RestaurantMatchView(generics.ListAPIView):
         restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])
         meal = Meal.objects.get(id=self.kwargs['pk'])
         number_diners = meal.invitee.all().count()
-        select_count = meal.all_users_have_selected.count()
+        selected = meal.all_users_have_selected
 
-        greenzone_queryset = restaurants.filter(meal_id=meal.id)
+        greenzone_queryset = restaurants.filter(yes__contained_by=selected)
 
         # logic for selecting a restaurant from the GreenZone list ===================================
         # get pk of first matched restaurant
