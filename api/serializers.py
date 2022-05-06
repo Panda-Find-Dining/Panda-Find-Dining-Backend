@@ -1,4 +1,4 @@
-from .models import Restaurant, Meal, User
+from .models import Restaurant, Meal, User, UserManager
 from rest_framework import serializers
 
 
@@ -19,6 +19,19 @@ class UserFriendSerializer(serializers.ModelSerializer):
             "friends_pk",
         )
 
+class UserManagerSerializer(serializers.ModelSerializer):
+    '''
+    Serialize Data to use for email
+    '''
+
+    class Meta:
+        model = UserManager
+        fields = (
+            "id",
+            "email",
+            "username",
+            "user",
+        )
 
 class UserSerializer(serializers.ModelSerializer):
     '''
@@ -36,6 +49,7 @@ class UserSerializer(serializers.ModelSerializer):
             "friends",
             "friends_pk"
         )
+
 
 
 class RestaurantSerializer(serializers.ModelSerializer):

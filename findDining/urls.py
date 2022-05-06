@@ -22,6 +22,7 @@ from django.urls import include
 router = routers.DefaultRouter()
 router.register(r'meals', views.MealViewSet)
 router.register(r'restaurants', views.RestaurantViewSet)
+# router.register(r'Email', views.EmailViewSet)
 
 
 urlpatterns = [

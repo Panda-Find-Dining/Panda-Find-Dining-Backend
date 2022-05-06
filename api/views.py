@@ -1,7 +1,7 @@
 from calendar import c
 from django.shortcuts import render
-from .models import User, Restaurant, Meal
-from .serializers import UserFriendSerializer, UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer
+from .models import User, Restaurant, Meal, UserManager
+from .serializers import UserFriendSerializer, UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer, UserManagerSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
@@ -18,7 +18,9 @@ import requests
 from findDining.settings import GOOGLE_MAPS_API_KEY as google_api_key
 from django.db.models import Q, Count
 from django_filters.rest_framework import DjangoFilterBackend
-
+from django.core import mail
+from django.core.mail import send_mail, EmailMessage, BadHeaderError, send_mass_mail, mail_managers
+from django.http import HttpResponse, HttpResponseRedirect
 
 class MealViewSet(ModelViewSet):
     '''
@@ -414,3 +416,45 @@ class UndoNo(APIView):
         current_restaurant.yes.add(current_user)
 
         return Response({"Requested": "You have said YES to this restaurant!"}, status=status.HTTP_200_OK)
+
+
+
+connection = mail.get_connection()
+
+# Manually open the connection
+connection.open()
+
+# Construct an email message that uses the connection
+email5 = mail.EmailMessage(
+    'Pee Pee',
+    'Poo Poo',
+    'momentumpandas@gmail.com',
+    ['momentumpandas@gmail.com'],
+    connection=connection,
+)
+email5.send() # Send the email
+connection.close()
+
+
+
+
+# If you want to send multiple messages at the same time
+
+# email2 = mail.EmailMessage(
+#     'Helhhlo',
+#     'Body goes heddddddre',
+#     'momentumpandas@gmail.com',
+#     ['momentumpandas@gmail.com'],
+# )
+# email3 = mail.EmailMessage(
+#     'Helfflo',
+#     'Body goes hegfgfdgfdgfdre',
+#     'momentumpandas@gmail.com',
+#     ['momentumpandas@gmail.com'],
+# )
+
+# Send the two emails in a single call -
+# connection.send_messages([email2, email3])
+# The connection was already open so send_messages() doesn't close it.
+# We need to manually close the connection.
+# connection.close()
