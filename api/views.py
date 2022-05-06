@@ -300,7 +300,7 @@ class RestaurantMatchView(generics.ListAPIView):
         number_diners = meal.invitee.all().count()
         selected_count = meal.all_users_have_selected.count()
 
-        greenzone_queryset = restaurants.filter(yes=2)
+        greenzone_queryset = restaurants.filter(yes=3)
 
         # logic for selecting a restaurant from the GreenZone list ===================================
         # get pk of first matched restaurant
