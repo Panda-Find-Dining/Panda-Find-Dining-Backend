@@ -298,7 +298,7 @@ class RestaurantMatchView(generics.ListAPIView):
         restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])
         meal = Meal.objects.get(id=self.kwargs['pk'])
         number_diners = meal.invitee.all().count()
-        selected_count = meal.all_users_have_selected.count()
+        selected_count = meal.all_users_have_selected.count() - 1
 
         greenzone_queryset = restaurants.filter(yes=selected_count)
 
