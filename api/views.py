@@ -20,6 +20,9 @@ from django.db.models import Q, Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from djoser.serializers import UserCreateSerializer
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class TokenObtainView(ObtainAuthToken):
@@ -450,3 +453,5 @@ class SelectedAndMatch(APIView):
             current_meal.save()
 
         return Response({"Requested": "You selected and done a match check!"}, status=status.HTTP_200_OK)
+
+

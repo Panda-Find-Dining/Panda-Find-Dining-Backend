@@ -1,5 +1,8 @@
-from .models import Restaurant, Meal, User
+from .models import Restaurant, Meal, User, UserManager
 from rest_framework import serializers
+from djoser.serializers import UserCreateSerializer
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class UserFriendSerializer(serializers.ModelSerializer):
@@ -119,3 +122,23 @@ class MealSerializer(serializers.ModelSerializer):
     #     # breakpoint()
 
     #     return total_number_people_going_to_eat
+
+    
+class UserManagerSerializer(serializers.ModelSerializer):
+    '''
+    Serialize Data to use for email
+    '''
+    class Meta:
+        model = UserManager
+        fields = (
+            "id",
+            "email",
+            "username",
+            "user",
+        )
+
+
+class UserCreateSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ('id', 'username', 'email', 'username', 'password')
