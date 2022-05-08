@@ -31,7 +31,8 @@ User = get_user_model()
 
 class TokenObtainView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,context={'request': request})
+        serializer = self.serializer_class(
+            data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
@@ -215,8 +216,8 @@ class GoogleAPICall(APIView):
                     icon=i['icon'],
                     meal=this_meal,
                     photo_reference=i['photos'][0]["photo_reference"],
-                    lat=i['geometry'][0]['location'][0],
-                    lon=i['geometry'][0]['location'][1]
+                    lat=i['geometry']['location']['lat'],
+                    lon=i['geometry']['location']['lng']
                 )
                 restaurant_data.save()
 
@@ -288,7 +289,8 @@ class MatchedRestaurantList(generics.ListAPIView):
         meal = Meal.objects.get(id=self.kwargs['pk'])
         number_diners = meal.invitee.all().count()
 
-        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=number_diners)
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count(
+            'yes')).filter(restaurant_yes_count=number_diners)
 
         return greenzone_queryset
 
@@ -309,7 +311,8 @@ class RestaurantMatchView(generics.ListAPIView):
         number_diners = meal.invitee.all().count()
         selected_count = meal.all_users_have_selected.count()
 
-        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=selected_count)
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count(
+            'yes')).filter(restaurant_yes_count=selected_count)
 
         # logic for selecting a restaurant from the GreenZone list
         # get pk of first matched restaurant
@@ -334,7 +337,8 @@ class MealRestaurantList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        filter_parameters = Restaurant.objects.filter(Q(meal_id=self.kwargs['pk']))
+        filter_parameters = Restaurant.objects.filter(
+            Q(meal_id=self.kwargs['pk']))
 
         return filter_parameters
 
@@ -378,7 +382,8 @@ class Match(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        filters = (Q(creator=self.request.user) | Q(invitee__pk=self.request.user.pk)) & Q(match=True)
+        filters = (Q(creator=self.request.user) | Q(
+            invitee__pk=self.request.user.pk)) & Q(match=True)
         match = Meal.objects.filter(filters).distinct()
         return match
 
