@@ -31,8 +31,7 @@ User = get_user_model()
 
 class TokenObtainView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
+        serializer = self.serializer_class(data=request.data,context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
@@ -54,11 +53,10 @@ class MealViewSet(ModelViewSet):
     Update part of an existing meal:  PATCH / meals / {id}
     Remove a meal:                    DELETE / meals / {id} /
     '''
-    # breakpoint()
+
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    # breakpoint()
 
 
 class RestaurantViewSet(ModelViewSet):
@@ -72,13 +70,12 @@ class RestaurantViewSet(ModelViewSet):
     Update part of an existing restaurant:  PATCH / restaurants / {id}
     Remove a restaurant:                    DELETE / restaurants / {id} /
     '''
-    # breakpoint()
+
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-# Searching
 class UserSearchView(generics.ListAPIView):
     '''
     This view will search all usernames for the query parameter
@@ -93,15 +90,17 @@ class UserSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = User.objects.all()
-        # breakpoint()
         friend_username = self.request.query_params.get('q')
         if friend_username is not None:
             queryset = queryset.filter(username__icontains=friend_username)
         return queryset
 
 
-# Follow/Unfollow
 class SaveFriendView(APIView):
+    '''
+    This view will follow a friend
+    '''
+
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def post(request, self, pk, format=None):
@@ -113,6 +112,10 @@ class SaveFriendView(APIView):
 
 
 class DeleteFriendView(APIView):
+    '''
+    This view will unfollow a friend
+    '''
+
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def delete(request, self, pk, format=None):
@@ -140,9 +143,7 @@ class UserSearchResultsView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
 
-        return User.objects.annotate(search=SearchVector("username", "first_name", "last_name")).filter(
-            search=query
-        )
+        return User.objects.annotate(search=SearchVector("username", "first_name", "last_name")).filter(search=query)
 
 
 class UserList(generics.ListAPIView):
@@ -181,7 +182,7 @@ class UserFriendsList(generics.ListAPIView):
     '''
     Return a list of all a users friends as a slug
     '''
-    # queryset = User.objects.all()
+
     serializer_class = UserFriendSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -285,8 +286,7 @@ class MatchedRestaurantList(generics.ListAPIView):
         meal = Meal.objects.get(id=self.kwargs['pk'])
         number_diners = meal.invitee.all().count()
 
-        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count(
-            'yes')).filter(restaurant_yes_count=number_diners)
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=number_diners)
 
         return greenzone_queryset
 
@@ -305,11 +305,11 @@ class RestaurantMatchView(generics.ListAPIView):
         restaurants = Restaurant.objects.filter(meal_id=self.kwargs['pk'])
         meal = Meal.objects.get(id=self.kwargs['pk'])
         number_diners = meal.invitee.all().count()
-        select_count = meal.all_users_have_selected.count()
+        selected_count = meal.all_users_have_selected.count()
 
-        greenzone_queryset = restaurants.filter(yes=select_count)
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=selected_count)
 
-        # logic for selecting a restaurant from the GreenZone list ===================================
+        # logic for selecting a restaurant from the GreenZone list
         # get pk of first matched restaurant
         match_pk = greenzone_queryset[0].id
 
@@ -332,13 +332,9 @@ class MealRestaurantList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        # breakpoint()
-        # self.kwargs['pk']
-        filter_parameters = Restaurant.objects.filter(
-            Q(meal_id=self.kwargs['pk']))
+        filter_parameters = Restaurant.objects.filter(Q(meal_id=self.kwargs['pk']))
 
         return filter_parameters
-        # return Meal.objects.filter(Q(invitee=user) | Q(creator_id=user)).order_by('-created_date')
 
 
 class UserSelectedView(APIView):
@@ -356,11 +352,11 @@ class UserSelectedView(APIView):
 
 
 class Pending(generics.ListAPIView):
-
+    '''
+    This view will show you a list of pending meals 
+    '''
     serializer_class = MealSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    # match=False, invitee__pk=self.request.user.id
 
     def get_queryset(self):
         filters = (Q(creator=self.request.user) | Q(
@@ -373,13 +369,14 @@ class Pending(generics.ListAPIView):
 
 
 class Match(generics.ListAPIView):
-
+    '''
+    This view will show you a list of matched meals 
+    '''
     serializer_class = MealSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        filters = (Q(creator=self.request.user) | Q(
-            invitee__pk=self.request.user.pk)) & Q(match=True)
+        filters = (Q(creator=self.request.user) | Q(invitee__pk=self.request.user.pk)) & Q(match=True)
         match = Meal.objects.filter(filters).distinct()
         return match
 
@@ -389,7 +386,7 @@ class Match(generics.ListAPIView):
 
 class DeclineMeal(APIView):
     '''
-
+    This view will Decline your meal 
     '''
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -404,12 +401,12 @@ class DeclineMeal(APIView):
             current_meal.archive = True
             current_meal.save()
 
-        return Response({"Requested": "pee pee poo poo!"}, status=status.HTTP_200_OK)
+        return Response({"Requested": "You have declined the meal!"}, status=status.HTTP_200_OK)
 
 
 class UndoYes(APIView):
     '''
-
+    This view will undo your option YES if you accidently hit the yes
     '''
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -424,7 +421,7 @@ class UndoYes(APIView):
 
 class UndoNo(APIView):
     '''
-
+    This view will undo your option NO if you accidently hit the no
     '''
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -445,7 +442,9 @@ class UndoNo(APIView):
 
 
 class SelectedAndMatch(APIView):
-
+    '''
+    This view will give you a  match after selecting restaurants
+    '''
     def get(request, self, pk, format=None):
         current_user = self.user
         current_meal = Meal.objects.get(id=pk)
