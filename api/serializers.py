@@ -1,3 +1,4 @@
+from django.forms import SlugField
 from .models import Restaurant, Meal, User
 from rest_framework import serializers
 
@@ -83,6 +84,7 @@ class MealSerializer(serializers.ModelSerializer):
     Serialize Data for the Meal model
     '''
     num_of_diners = serializers.ReadOnlyField()
+    invitee_names = serializers.SlugRelatedField(slug_field="invitee", read_only=True, many=True)
 
     class Meta:
         model = Meal
@@ -91,6 +93,7 @@ class MealSerializer(serializers.ModelSerializer):
             'num_of_diners',
             'creator',
             'invitee',
+            'invitee_names',
             'created_date',
             'location',
             'radius',
