@@ -50,6 +50,12 @@ class Restaurant(models.Model):
     no = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='voted_no', blank=True)
     photo_reference = models.CharField(blank=True, max_length=1000)
+    
+    #Detailed Request
+    website = models.URLField(blank=True, null=True)
+    price_level = models.CharField(max_length=20, blank=True, null=True)
+    rating = models.CharField(max_length=20, blank=True, null=True)
+    user_ratings_total = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -96,3 +102,4 @@ class Meal(models.Model):
         total_number_people_going_to_eat = number_of_people_invited + number_of_creators
 
         return total_number_people_going_to_eat
+

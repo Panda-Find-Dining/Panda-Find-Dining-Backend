@@ -58,7 +58,8 @@ urlpatterns = [
     path('api/selected-and-match/<int:pk>/',
          views.SelectedAndMatch.as_view(), name='selected-and-match'),
     path('api/tokenpk/',
-         views.TokenObtainView.as_view(), name='new-token,obtain-view')
+         views.TokenObtainView.as_view(), name='new-token,obtain-view'),
+    path('api/restaurants/<int:pk>/google/detail/', views.GoogleRestaurantDetailAPICall.as_view(), name='restaurant-details'),
 
 
 ]

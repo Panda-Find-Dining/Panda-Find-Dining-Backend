@@ -450,3 +450,29 @@ class SelectedAndMatch(APIView):
             current_meal.save()
 
         return Response({"Requested": "You selected and done a match check!"}, status=status.HTTP_200_OK)
+
+
+
+class GoogleRestaurantDetailAPICall(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(request, self, pk, format=None):
+        this_restaurant = Restaurant.objects.get(id=pk)
+
+        def get_restaurant_details():
+            url = f"https://maps.googleapis.com/maps/api/place/detail/json?place_id=query={this_restaurant.place_id}&fields=website%2Cprice_level%2Crating%2user_ratings_total%2C&key={google_api_key}"
+            response = requests.get(url)
+            data = response.json()
+            restaurants = data['results']
+            for i in restaurants:
+                restaurant_data = Restaurant(
+                    website=i['website'],
+                    price_level=i['price_level'],
+                    rating=i['rating'],
+                    user_ratings_total=i['user_ratings_total'],
+                )
+                restaurant_data.save()
+
+        get_restaurant_details()
+
+        return Response({"Requested": "Restaurant Details Added"}, status=status.HTTP_200_OK)
