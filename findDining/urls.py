@@ -58,7 +58,11 @@ urlpatterns = [
     path('api/selected-and-match/<int:pk>/',
          views.SelectedAndMatch.as_view(), name='selected-and-match'),
     path('api/tokenpk/',
-         views.TokenObtainView.as_view(), name='new-token,obtain-view')
+         views.TokenObtainView.as_view(), name='new-token,obtain-view'),
+    path('password/reset/confirm/<str:uid>/<str:token>/', views.reset_user_password,
+         name='reset_user_password'),
+    path('activate/<uid>/<token>',
+         views.ActivateUser.as_view({'get': 'activation'}), name='activation'),
 
 
 ]

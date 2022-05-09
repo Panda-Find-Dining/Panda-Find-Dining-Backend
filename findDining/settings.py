@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.postgres',         #Testing for search (Ryan)
+    'django.contrib.postgres',  # Testing for search (Ryan)
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
@@ -73,7 +73,7 @@ ROOT_URLCONF = 'findDining.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,7 +142,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 AUTH_USER_MODEL = "api.User"
 
 
-
 django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
 
@@ -154,3 +153,31 @@ REST_FRAMEWORK = {
 
 
 GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env('EM_ACCOUT')
+EMAIL_HOST_PASSWORD = env('EM_PASSWORD')
+
+DJOSER = {
+
+    'SEND_ACTIVATION_EMAIL': True,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
+
+    'SERIALIZERS': {
+        'user_create': 'api.serializers.UserCreateSerializer',
+        'user': 'api.serializers.UserCreateSerializer',
+        'user_delete': 'api.serializers.UserDeleteSerializer',
+        # 'activation': 'djoser.email.ActivationEmail',
+    },
+}

@@ -9,7 +9,7 @@ import django_filters
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, username, email, password, **extra_fields):
+    def create_user(self, username, email, password, **extra_fields):
 
         if not username:
             raise ValueError('The given username must be set')
@@ -58,7 +58,6 @@ class Restaurant(models.Model):
         restaurant_id_from_obj = self.id
         restaurant = Restaurant.objects.get(id=restaurant_id_from_obj)
         yes_count = restaurant.yes.all().count()
-        # breakpoint()
         return yes_count
 
 
@@ -70,8 +69,8 @@ class Meal(models.Model):
         settings.AUTH_USER_MODEL, blank=True, related_name='invitee')
     location = models.CharField(blank=True, null=True, max_length=100)
     radius = models.IntegerField(blank=True, null=True)
-    lat = models.FloatField(blank=True, null=True)
-    lon = models.FloatField(blank=True, null=True)
+    lat = models.CharField(blank=True, null=True, max_length=100)
+    lon = models.CharField(blank=True, null=True, max_length=100)
     user_has_selected = models.BooleanField(
         default=False, blank=True, null=True)
     friends_have_selected = models.ManyToManyField(
@@ -80,7 +79,6 @@ class Meal(models.Model):
     archive = models.BooleanField(blank=True, null=True, default=False)
     all_users_have_selected = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='all_users_have_selected', blank=True)
-    # restaurant = models.ForeignKey(Restaurant, blank=True, null=True, on_delete=models.CASCADE, related_name="restaurant")
 
     def __str__(self):
         return self.location
@@ -89,7 +87,6 @@ class Meal(models.Model):
     def num_of_diners(self):
 
         number_of_creators = 1
-        # num_invitees = 1     # get count by querying M2M table 'api_meal_invitee'
         meal_id_from_self = self.id
         meal = Meal.objects.get(id=meal_id_from_self)
         number_of_people_invited = meal.invitee.all().count()
