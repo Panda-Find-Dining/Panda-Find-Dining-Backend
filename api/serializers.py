@@ -31,8 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the User model
     '''
-    friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
-    friends_pk = serializers.PrimaryKeyRelatedField(source='friends', many=True, read_only=True)
+    friends = serializers.SlugRelatedField(
+        slug_field="username", read_only=True, many=True)
+    friends_pk = serializers.PrimaryKeyRelatedField(
+        source='friends', many=True, read_only=True)
 
     class Meta:
         model = User
@@ -76,8 +78,10 @@ class MealSerializer(serializers.ModelSerializer):
     '''
     num_of_diners = serializers.ReadOnlyField()
 
-    invitee_pk = serializers.PrimaryKeyRelatedField(source='invitee', many=True, read_only=True)
-    invitee = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
+    invitee = serializers.PrimaryKeyRelatedField(
+        source='invitee', many=True, read_only=True)
+    invitee_names = serializers.SlugRelatedField(
+        slug_field="username", read_only=True, many=True)
 
     # friends_pk = serializers.PrimaryKeyRelatedField(source='friends', many=True, read_only=True)
     # friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
@@ -89,7 +93,7 @@ class MealSerializer(serializers.ModelSerializer):
             'num_of_diners',
             'creator',
             'invitee',
-            'invitee_pk',
+            'invitee_names',
             'created_date',
             'location',
             'radius',
