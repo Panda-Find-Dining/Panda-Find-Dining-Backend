@@ -79,7 +79,7 @@ class MealSerializer(serializers.ModelSerializer):
     num_of_diners = serializers.ReadOnlyField()
 
     invitee = serializers.PrimaryKeyRelatedField(
-        source='invitee', many=True, read_only=True)
+        many=True, read_only=True)
     invitee_names = serializers.SlugRelatedField(
         slug_field="username", read_only=True, many=True)
 
