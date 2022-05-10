@@ -1,5 +1,5 @@
 from calendar import c
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import User, Restaurant, Meal
 from .serializers import UserFriendSerializer, UserSerializer, RestaurantSerializer, MealSerializer, UserSerializer
 from rest_framework.permissions import AllowAny
@@ -10,7 +10,7 @@ from rest_framework import permissions, generics, status
 from .permissions import IsOwnerOrReadOnly
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.views.generic.list import ListView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, GenericAPIView
 from django.conf import settings
 import responses
 import googlemaps
@@ -20,11 +20,19 @@ from django.db.models import Q, Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from djoser.serializers import UserCreateSerializer
+from django.contrib.auth import get_user_model
+from rest_framework.reverse import reverse
+from djoser.conf import django_settings
+from djoser.views import UserViewSet
+
+User = get_user_model()
 
 
 class TokenObtainView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,context={'request': request})
+        serializer = self.serializer_class(
+            data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
@@ -207,7 +215,9 @@ class GoogleAPICall(APIView):
                     business_status=i['business_status'],
                     icon=i['icon'],
                     meal=this_meal,
-                    photo_reference=i['photos'][0]["photo_reference"]
+                    photo_reference=i['photos'][0]["photo_reference"],
+                    lat=i['geometry']['location']['lat'],
+                    lon=i['geometry']['location']['lng']
                 )
                 restaurant_data.save()
 
@@ -279,7 +289,8 @@ class MatchedRestaurantList(generics.ListAPIView):
         meal = Meal.objects.get(id=self.kwargs['pk'])
         number_diners = meal.invitee.all().count()
 
-        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=number_diners)
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count(
+            'yes')).filter(restaurant_yes_count=number_diners)
 
         return greenzone_queryset
 
@@ -300,7 +311,8 @@ class RestaurantMatchView(generics.ListAPIView):
         number_diners = meal.invitee.all().count()
         selected_count = meal.all_users_have_selected.count()
 
-        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count('yes')).filter(restaurant_yes_count=selected_count)
+        greenzone_queryset = restaurants.annotate(restaurant_yes_count=Count(
+            'yes')).filter(restaurant_yes_count=selected_count)
 
         # logic for selecting a restaurant from the GreenZone list
         # get pk of first matched restaurant
@@ -325,7 +337,8 @@ class MealRestaurantList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        filter_parameters = Restaurant.objects.filter(Q(meal_id=self.kwargs['pk']))
+        filter_parameters = Restaurant.objects.filter(
+            Q(meal_id=self.kwargs['pk']))
 
         return filter_parameters
 
@@ -369,7 +382,8 @@ class Match(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        filters = (Q(creator=self.request.user) | Q(invitee__pk=self.request.user.pk)) & Q(match=True)
+        filters = (Q(creator=self.request.user) | Q(
+            invitee__pk=self.request.user.pk)) & Q(match=True)
         match = Meal.objects.filter(filters).distinct()
         return match
 
@@ -449,3 +463,37 @@ class SelectedAndMatch(APIView):
             current_meal.save()
 
         return Response({"Requested": "You selected and done a match check!"}, status=status.HTTP_200_OK)
+
+
+def reset_user_password(request, uid, token):
+    if request.POST:
+        password = request.POST.get('password1')
+        payload = {'uid': uid, 'token': token, 'new_password': password}
+
+        url = 'https://find-dining-panda.herokuapp.com/api/auth/users/reset_password_confirm/'
+
+        response = requests.post(url, data=payload)
+        if response.status_code == 204:
+            # Give some feedback to the user. For instance:
+            # https://docs.djangoproject.com/en/2.2/ref/contrib/messages/
+            return render(request, 'success.html')
+        else:
+            return render(request, 'error.html')
+    else:
+        return render(request, 'reset_password.html')
+
+
+class ActivateUser(UserViewSet):
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        kwargs.setdefault('context', self.get_serializer_context())
+
+        # this line is the only change from the base implementation.
+        kwargs['data'] = {"uid": self.kwargs['uid'],
+                          "token": self.kwargs['token']}
+
+        return serializer_class(*args, **kwargs)
+
+    def activation(self, request, uid, token, *args, **kwargs):
+        super().activation(request, *args, **kwargs)
+        return Response(status=status.HTTP_204_NO_CONTENT)

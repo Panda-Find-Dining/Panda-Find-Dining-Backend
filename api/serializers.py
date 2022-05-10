@@ -1,5 +1,10 @@
+from django.forms import SlugField
 from .models import Restaurant, Meal, User
+from .models import Restaurant, Meal, User, UserManager
 from rest_framework import serializers
+from djoser.serializers import UserCreateSerializer
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class UserFriendSerializer(serializers.ModelSerializer):
@@ -7,8 +12,10 @@ class UserFriendSerializer(serializers.ModelSerializer):
     Serialize Data for the User model
     '''
 
-    friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
-    friends_pk = serializers.PrimaryKeyRelatedField(source='friends', many=True, read_only=True)
+    friends = serializers.SlugRelatedField(
+        slug_field="username", read_only=True, many=True)
+    friends_pk = serializers.PrimaryKeyRelatedField(
+        source='friends', many=True, read_only=True)
 
     class Meta:
         model = User
@@ -24,8 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the User model
     '''
-    friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
-    friends_pk = serializers.PrimaryKeyRelatedField(source='friends', many=True, read_only=True)
+    friends = serializers.SlugRelatedField(
+        slug_field="username", read_only=True, many=True)
+    friends_pk = serializers.PrimaryKeyRelatedField(
+        source='friends', many=True, read_only=True)
 
     class Meta:
         model = User
@@ -35,6 +44,7 @@ class UserSerializer(serializers.ModelSerializer):
             "friends",
             "friends_pk"
         )
+
 
 class RestaurantSerializer(serializers.ModelSerializer):
     '''
@@ -61,11 +71,18 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'photo_reference',
         )
 
+
 class MealSerializer(serializers.ModelSerializer):
     '''
     Serialize Data for the Meal model
     '''
     num_of_diners = serializers.ReadOnlyField()
+
+    # invitee_names = serializers.SlugRelatedField(
+    #     slug_field="username", read_only=True, many=True)
+
+    # friends_pk = serializers.PrimaryKeyRelatedField(source='friends', many=True, read_only=True)
+    # friends = serializers.SlugRelatedField(slug_field="username", read_only=True, many=True)
 
     class Meta:
         model = Meal
@@ -74,6 +91,7 @@ class MealSerializer(serializers.ModelSerializer):
             'num_of_diners',
             'creator',
             'invitee',
+            'invitee_names',
             'created_date',
             'location',
             'radius',
@@ -85,3 +103,23 @@ class MealSerializer(serializers.ModelSerializer):
             'archive',
             'all_users_have_selected',
         )
+
+
+class UserManagerSerializer(serializers.ModelSerializer):
+    '''
+    Serialize Data to use for email
+    '''
+    class Meta:
+        model = UserManager
+        fields = (
+            "id",
+            "email",
+            "username",
+            "user",
+        )
+
+
+class UserCreateSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ('id', 'username', 'email', 'username', 'password')
