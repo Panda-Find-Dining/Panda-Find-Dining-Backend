@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 import django_filters
+from django.contrib.postgres.fields import ArrayField
 
 
 class UserManager(BaseUserManager):
@@ -67,6 +68,10 @@ class Meal(models.Model):
     created_date = models.DateTimeField(auto_now_add=datetime.now)
     invitee = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name='invitee')
+    invitee_names = ArrayField(
+        models.CharField(max_length=100, null=True),
+        default=list
+    )
     location = models.CharField(blank=True, null=True, max_length=100)
     radius = models.IntegerField(blank=True, null=True)
     lat = models.CharField(blank=True, null=True, max_length=100)
