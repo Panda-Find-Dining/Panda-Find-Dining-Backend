@@ -71,6 +71,821 @@ https://find-dining-panda.herokuapp.com/
 
 
 
+<!--------------------------- Register new User ------------------------------>
+## Register a new user
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+Username and password are required.
+
+```json
+POST /api/auth/users
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+```
+
+### response
+
+
+```txt
+
+201 Created
+
+```
+
+
+
+```json
+{
+  "email": "",
+  "username": "admin",
+  "id": 3
+}
+
+```
+
+<!-------------------------- LOGIN ------------------------------>
+## Log In
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+```
+POST /api/auth/token/login
+```
+
+```json
+{
+  "username": "admin",
+  "password": "admin"
+}
+```
+
+### response
+
+
+```txt
+
+200 OK
+400 Bad Request
+
+```
+
+
+
+```json
+{
+  "auth_token": "c312049c7f034a3d1b52eabc2040b46e094ff34c"
+}
+``` 
+
+<!-------------------------- LOGOUT ------------------------------>
+## Log Out 
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+```
+POST /api/auth/token/logout
+```
+
+### response
+
+```txt
+204 No Content
+```
+
+
+## TemplateHeader
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+User must be logged in 
+
+User must be logged in and authenticated with Token in header
+Required Fields:
+
+```txt
+POST 
+```
+
+```json
+
+```
+
+### response
+
+```txt
+200 Message
+```
+
+```json
+
+```
+
+
+<!-------------------------- List meals ------------------------------>
+
+
+## List All meals
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```
+GET /api/meals/
+```
+
+### response
+
+
+User must be logged in and authenticated.  Token in header
+
+
+```txt
+
+HTTP 200 OK
+Allow: GET, POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+```
+
+
+<!-------------------------- Get Meal Details  ------------------------------>
+
+## Retrieve a specific meal
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+User must be logged in and authenticated with Token in header
+
+```txt
+GET / api / meals / {id} 
+```
+
+### response
+
+
+
+```txt
+
+HTTP 200 OK
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+```
+
+
+
+
+```json
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+}
+```
+
+<!-------------------------- Create a new meal  ------------------------------>
+
+
+ ## Create A New meal
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+User must be logged in and authenticated with Token in header
+Required fields: creator(auto), location (string for search), radius
+
+```
+POST /api/meals/
+```
+
+```json
+
+{
+    "creator": 3,
+    "invitee": [1,
+        2,
+        3,
+        4,
+        5
+    ],
+    "location": "Cary, NC",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+}
+
+```
+
+### response
+
+
+```txt
+
+HTTP 201 Created
+Allow: GET, POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+
+
+```json
+{
+  "id": 10,
+  "creator": 3,
+  "created_date": "2022-04-27T10:06:16.694038-05:00",
+  "invitee": [
+    2,
+    3,
+    4,
+    5,
+    1
+  ],
+  "location": "Cary, NC",
+  "radius": 20,
+  "lat": null,
+  "lon": null
+}
+```
+
+
+
+
+
+```json
+[
+    {
+        "id": 3,
+        "creator": 1,
+        "created_date": "2022-04-24T17:40:22.850266-05:00",
+        "invitee": [],
+        "location": "Raleigh",
+        "radius": 20,
+        "lat": null,
+        "lon": null
+    },
+    {
+        "id": 4,
+        "creator": 1,
+        "created_date": "2022-04-25T09:51:02.586210-05:00",
+        "invitee": [],
+        "location": "Cary",
+        "radius": 20,
+        "lat": null,
+        "lon": null
+    },
+    {
+        "id": 5,
+        "creator": 1,
+        "created_date": "2022-04-25T09:51:24.026446-05:00",
+        "invitee": [],
+        "location": "North Myrtle Beach",
+        "radius": 20,
+        "lat": null,
+        "lon": null
+    }
+]
+```
+
+<!-------------------------- Update Existing Meal  ------------------------------>
+
+## Update an existing meal
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+User must be logged in and authenticated with Token in header
+Required fields: id
+
+```txt
+PUT / api / meals / {id} 
+```
+
+```json
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach",
+    "radius": 30,
+    "lat": null,
+    "lon": null
+}
+```
+
+### response
+
+```txt
+
+HTTP 200 OK
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+```
+
+
+
+```json
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach",
+    "radius": 30,
+    "lat": null,
+    "lon": null
+}
+```
+
+<!-------------------------- Update part of an Existing Meal  ------------------------------>
+
+## Update part of an existing meal
+
+[Back to Endpoints](#api-endpoints)
+
+### request
+
+User must be logged in and authenticated with Token in header
+Required fields: id
+
+```txt
+PATCH / api / meals / {id} 
+```
+
+```json
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach, SC",
+    "radius": 30,
+    "lat": null,
+    "lon": null
+}
+```
+
+### response
+
+
+
+```txt
+
+HTTP 200 OK
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+```
+
+
+```json
+{
+    "id": 5,
+    "creator": 1,
+    "created_date": "2022-04-25T09:51:24.026446-05:00",
+    "invitee": [],
+    "location": "North Myrtle Beach, SC",
+    "radius": 30,
+    "lat": null,
+    "lon": null
+}
+```
+<!-------------------------- Delete an Existing Meal  ------------------------------>
+
+## Delete an existing meal
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+Required fields: id(of meal)
+
+
+```txt
+DELETE / api / meals / {id} 
+```
+
+### response
+
+```txt
+HTTP 204 No Content
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+<!-------------------------- Get list of all users  ------------------------------>
+
+## Get list of all users
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / users 
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+[
+    {
+        "id": 2,
+        "username": "Ryan",
+        "friends": []
+    },
+    {
+        "id": 3,
+        "username": "Paul",
+        "friends": []
+    },
+    {
+        "id": 4,
+        "username": "Tyler",
+        "friends": []
+    },
+    {
+        "id": 5,
+        "username": "KE",
+        "friends": []
+    },
+    {
+        "id": 1,
+        "username": "admin",
+        "friends": []
+    }
+]
+```
+
+<!-------------------------- Follow or Friend a User  ------------------------------>
+
+## Follow user
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+POST / api / follow / <pk> 
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+	"Requested": "Save request has been sent!!"
+}
+```
+
+<!-------------------------- Unfollow or Unfriend a User  ------------------------------>
+
+## Unfollow user
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+DELETE / api / unfollow / <pk> 
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+	"Requested": "Deleted!"
+}
+```
+
+<!-------------------------- Search all users  ------------------------------>
+
+## Search All Users
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / search /  
+GET http://127.0.0.1:8000/api/search/?q=tyler+galvin
+
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "id": 4,
+  "friends": [
+    2
+  ]
+}
+```
+
+<!-------------------------- Query Google for Restaurants ------------------------------>
+
+## Get restaurants for meal
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / googleapicall / {meal_pk} 
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "Requested": "Restaurants Added"
+}
+```
+
+<!-------------------------- Get All Users Meals------------------------------>
+
+
+## Get all of a users meals
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+This enpoint will query all meals and return those where the user making
+the request has either created a meal or been invited.
+
+Results are sorted in reverse order by date created so newest are at the top
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / users / meals /
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+[
+  {
+    "id": 11,
+    "creator": 3,
+    "created_date": "2022-04-27T23:04:18.753222-05:00",
+    "invitee": [
+      2,
+      3,
+      4,
+      5,
+      1
+    ],
+    "location": "Cary, NC",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+  },
+  {
+    "id": 9,
+    "creator": 3,
+    "created_date": "2022-04-27T10:05:34.747593-05:00",
+    "invitee": [
+      1
+    ],
+    "location": "Cary, NC",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+  },
+  {
+    "id": 3,
+    "creator": 1,
+    "created_date": "2022-04-24T17:40:22.850266-05:00",
+    "invitee": [],
+    "location": "Raleigh",
+    "radius": 20,
+    "lat": null,
+    "lon": null
+  }
+]
+```
+
+<!-------------------------- User swipes right on restaurant ------------------------------>
+
+
+## User likes restaurant
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+When a user swipes right their name is added to the 'yes' list for the Restaurant instance shown.
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / restaurants / <int:pk> / yes /
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "Requested": "You have said YES to this restaurant!"
+}
+```
+
+
+<!-------------------------- User swipes left on restaurant ------------------------------>
+
+
+## User likes restaurant
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+When a user swipes left their name is added to the 'no' list for the Restaurant instance shown.
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / restaurants / <int:pk> / no /
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "Requested": "You have said NO to this restaurant!"
+}
+```
+
+<!-------------------------- Get all Restaurants ------------------------------>
+
+
+## Get all restaurants
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+This request returns a list of all the restaurants stored in the database
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / restaurants /
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "Requested": "You have said NO to this restaurant!"
+}
+```
 
 
 <!-------------------------- Get the List of Matched Restaurants ------------------------------>
@@ -209,13 +1024,10 @@ Vary: Accept
 ]
 ```
 
+<!-------------------------- Show if pending status is False	  ------------------------------>
 
 
-
-<!-------------------------- Get all Restaurants ------------------------------>
-
-
-## Get all restaurants
+## Show if pending status is false
 
 
 [Back to Endpoints](#api-endpoints)
@@ -223,93 +1035,13 @@ Vary: Accept
 
 ### request
 
-This request returns a list of all the restaurants stored in the database
+This request returns a pending meal and should show the status as false
 
 User must be logged in and authenticated with Token in header
 
 
 ```txt
-GET / api / restaurants /
-```
-
-### response
-
-```txt
-HTTP 200 OK
-Allow: GET, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
-```
-
-```json
-{
-  "Requested": "You have said NO to this restaurant!"
-}
-```
-
-
-
-
-
-
-<!-------------------------- User swipes right on restaurant ------------------------------>
-
-
-## User likes restaurant
-
-
-[Back to Endpoints](#api-endpoints)
-
-
-### request
-
-When a user swipes right their name is added to the 'yes' list for the Restaurant instance shown.
-
-User must be logged in and authenticated with Token in header
-
-
-```txt
-GET / api / restaurants / <int:pk> / yes /
-```
-
-### response
-
-```txt
-HTTP 200 OK
-Allow: GET, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
-```
-
-```json
-{
-  "Requested": "You have said YES to this restaurant!"
-}
-```
-
-
-
-<!-------------------------- Get Users Meals------------------------------>
-
-
-## Get all of a users meals
-
-
-[Back to Endpoints](#api-endpoints)
-
-
-### request
-
-This enpoint will query all meals and return those where the user making
-the request has either created a meal or been invited.
-
-Results are sorted in reverse order by date created so newest are at the top
-
-User must be logged in and authenticated with Token in header
-
-
-```txt
-GET / api / users / meals /
+GET / api / pending /
 ```
 
 ### response
@@ -323,53 +1055,35 @@ Vary: Accept
 
 ```json
 [
-  {
-    "id": 11,
-    "creator": 3,
-    "created_date": "2022-04-27T23:04:18.753222-05:00",
-    "invitee": [
-      2,
-      3,
-      4,
-      5,
-      1
-    ],
-    "location": "Cary, NC",
-    "radius": 20,
-    "lat": null,
-    "lon": null
-  },
-  {
-    "id": 9,
-    "creator": 3,
-    "created_date": "2022-04-27T10:05:34.747593-05:00",
-    "invitee": [
-      1
-    ],
-    "location": "Cary, NC",
-    "radius": 20,
-    "lat": null,
-    "lon": null
-  },
-  {
-    "id": 3,
-    "creator": 1,
-    "created_date": "2022-04-24T17:40:22.850266-05:00",
-    "invitee": [],
-    "location": "Raleigh",
-    "radius": 20,
-    "lat": null,
-    "lon": null
-  }
+	{
+		"id": 2,
+		"num_of_diners": 4,
+		"creator": 4,
+		"invitee": [
+			3,
+			5,
+			2
+		],
+		"created_date": "2022-05-03T20:23:50.755247-05:00",
+		"location": "Raleigh",
+		"radius": null,
+		"lat": null,
+		"lon": null,
+		"match": false,
+		"user_has_selected": true,
+		"friends_have_selected": [
+			5
+		],
+		"archive": false,
+		"all_users_have_selected": []
+	}
 ]
 ```
 
+<!-------------------------- Show if match status is true	  ------------------------------>
 
 
-
-<!-------------------------- Query Google for Restaurants ------------------------------>
-
-## Get restaurants for meal
+## Show if match status is true
 
 
 [Back to Endpoints](#api-endpoints)
@@ -377,12 +1091,13 @@ Vary: Accept
 
 ### request
 
+This request returns a match meal and should show the status as true
 
 User must be logged in and authenticated with Token in header
 
 
 ```txt
-GET / api / googleapicall / {meal_pk} 
+GET / api / match /
 ```
 
 ### response
@@ -395,16 +1110,42 @@ Vary: Accept
 ```
 
 ```json
-{
-  "Requested": "Restaurants Added"
-}
+[
+	{
+		"id": 2,
+		"num_of_diners": 4,
+		"creator": 4,
+		"invitee": [
+			3,
+			5,
+			2
+		],
+		"created_date": "2022-05-03T20:23:50.755247-05:00",
+		"location": "Raleigh",
+		"radius": null,
+		"lat": null,
+		"lon": null,
+		"match": true,
+		"user_has_selected": true,
+		"friends_have_selected": [
+			3,
+			5,
+			2
+		],
+		"archive": false,
+		"all_users_have_selected": [
+			3,
+			5,
+			2
+		]
+	}
+]
 ```
 
+<!-------------------------- Undo Yes Selection ------------------------------>
 
 
-<!-------------------------- Search all users  ------------------------------>
-
-## Search All Users
+## Undo Yes Selection
 
 
 [Back to Endpoints](#api-endpoints)
@@ -412,53 +1153,13 @@ Vary: Accept
 
 ### request
 
+This request will undo your option YES if you accidently hit the yes
 
 User must be logged in and authenticated with Token in header
 
 
 ```txt
-GET / api / search /  
-GET http://127.0.0.1:8000/api/search/?q=tyler+galvin
-
-```
-
-### response
-
-```txt
-HTTP 200 OK
-Allow: GET, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
-```
-
-```json
-{
-  "id": 4,
-  "friends": [
-    2
-  ]
-}
-```
-
-
-
-
-<!-------------------------- Unfollow or Unfriend a User  ------------------------------>
-
-## Unfollow user
-
-
-[Back to Endpoints](#api-endpoints)
-
-
-### request
-
-
-User must be logged in and authenticated with Token in header
-
-
-```txt
-DELETE / api / unfollow / <pk> 
+DELETE / api / undo_yes / <int:meal_pk> /
 ```
 
 ### response
@@ -472,15 +1173,14 @@ Vary: Accept
 
 ```json
 {
-	"Requested": "Deleted!"
+  "Requested": "You have changed your mind from yes!"
 }
 ```
 
+<!-------------------------- Undo No Selection ------------------------------>
 
 
-<!-------------------------- Follow or Friend a User  ------------------------------>
-
-## Follow user
+## Undo No Selection
 
 
 [Back to Endpoints](#api-endpoints)
@@ -488,37 +1188,34 @@ Vary: Accept
 
 ### request
 
+This request will undo your option No if you accidently hit the No
 
 User must be logged in and authenticated with Token in header
 
 
 ```txt
-POST / api / follow / <pk> 
+DELETE / api / undo_no / <int:meal_pk> /
 ```
 
 ### response
 
 ```txt
 HTTP 200 OK
-Allow: POST, HEAD, OPTIONS
+Allow: DELETE, HEAD, OPTIONS
 Content-Type: application/json
 Vary: Accept
 ```
 
 ```json
 {
-	"Requested": "Save request has been sent!!"
+  "Requested": "You have changed your mind from No!"
 }
 ```
 
+<!-------------------------- Removes invitee from meal ------------------------------>
 
 
-
-<hr>
-
-<!-------------------------- Get list of all users  ------------------------------>
-
-## Get list of all users
+## Removes invitee from meal
 
 
 [Back to Endpoints](#api-endpoints)
@@ -526,12 +1223,49 @@ Vary: Accept
 
 ### request
 
+This request will remove an invitee from a meal
 
 User must be logged in and authenticated with Token in header
 
 
 ```txt
-GET / api / users 
+DELETE / api / decline / <int:meal_pk> /
+```
+
+### response
+
+```txt
+HTTP 200 OK
+Allow: DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+```
+
+```json
+{
+  "Requested": "You have declined the meal!"
+}
+```
+
+
+<!-------------------------- Selected and done a match check ------------------------------>
+
+
+## Selected and done a match check
+
+
+[Back to Endpoints](#api-endpoints)
+
+
+### request
+
+This request will give you a  match after selecting restaurants
+
+User must be logged in and authenticated with Token in header
+
+
+```txt
+GET / api / selected-and-match / <int:meal_pk> /
 ```
 
 ### response
@@ -544,174 +1278,8 @@ Vary: Accept
 ```
 
 ```json
-[
-    {
-        "id": 2,
-        "username": "Ryan",
-        "friends": []
-    },
-    {
-        "id": 3,
-        "username": "Paul",
-        "friends": []
-    },
-    {
-        "id": 4,
-        "username": "Tyler",
-        "friends": []
-    },
-    {
-        "id": 5,
-        "username": "KE",
-        "friends": []
-    },
-    {
-        "id": 1,
-        "username": "admin",
-        "friends": []
-    }
-]
-```
-
-
-<!-------------------------- Delete an Existing Meal  ------------------------------>
-
-## Delete an existing meal
-
-
-[Back to Endpoints](#api-endpoints)
-
-
-### request
-
-
-User must be logged in and authenticated with Token in header
-Required fields: id(of meal)
-
-
-```txt
-DELETE / api / meals / {id} 
-```
-
-### response
-
-```txt
-HTTP 204 No Content
-Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
-```
-
-
-<!-------------------------- Update part of an Existing Meal  ------------------------------>
-
-## Update an existing meal
-
-[Back to Endpoints](#api-endpoints)
-
-### request
-
-User must be logged in and authenticated with Token in header
-Required fields: id
-
-```txt
-PATCH / api / meals / {id} 
-```
-
-```json
 {
-    "id": 5,
-    "creator": 1,
-    "created_date": "2022-04-25T09:51:24.026446-05:00",
-    "invitee": [],
-    "location": "North Myrtle Beach, SC",
-    "radius": 30,
-    "lat": null,
-    "lon": null
-}
-```
-
-### response
-
-
-
-```txt
-
-HTTP 200 OK
-Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
-
-```
-
-
-```json
-{
-    "id": 5,
-    "creator": 1,
-    "created_date": "2022-04-25T09:51:24.026446-05:00",
-    "invitee": [],
-    "location": "North Myrtle Beach, SC",
-    "radius": 30,
-    "lat": null,
-    "lon": null
-}
-```
-
-
-
-
-<!-------------------------- Update Existing Meal  ------------------------------>
-
-## Update an existing meal
-
-[Back to Endpoints](#api-endpoints)
-
-### request
-
-User must be logged in and authenticated with Token in header
-Required fields: id
-
-```txt
-PUT / api / meals / {id} 
-```
-
-```json
-{
-    "id": 5,
-    "creator": 1,
-    "created_date": "2022-04-25T09:51:24.026446-05:00",
-    "invitee": [],
-    "location": "North Myrtle Beach",
-    "radius": 30,
-    "lat": null,
-    "lon": null
-}
-```
-
-### response
-
-```txt
-
-HTTP 200 OK
-Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
-
-```
-
-
-
-```json
-{
-    "id": 5,
-    "creator": 1,
-    "created_date": "2022-04-25T09:51:24.026446-05:00",
-    "invitee": [],
-    "location": "North Myrtle Beach",
-    "radius": 30,
-    "lat": null,
-    "lon": null
+  "Requested": "You selected and done a match check!"
 }
 ```
 
@@ -719,316 +1287,38 @@ Vary: Accept
 
 
 
-<!-------------------------- Get Meal Details  ------------------------------>
 
-## Retrieve a specific meal
 
-[Back to Endpoints](#api-endpoints)
 
-### request
 
-User must be logged in and authenticated with Token in header
 
-```txt
-GET / api / meals / {id} 
-```
 
-### response
 
 
 
-```txt
 
-HTTP 200 OK
-Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
 
-```
 
 
 
 
-```json
-{
-    "id": 5,
-    "creator": 1,
-    "created_date": "2022-04-25T09:51:24.026446-05:00",
-    "invitee": [],
-    "location": "North Myrtle Beach",
-    "radius": 20,
-    "lat": null,
-    "lon": null
-}
-```
 
 
 
 
-<!-------------------------- Create a new meal  ------------------------------>
 
 
- ## Create A New meal
 
-[Back to Endpoints](#api-endpoints)
 
 
-### request
 
-User must be logged in and authenticated with Token in header
-Required fields: creator(auto), location (string for search), radius
 
-```
-POST /api/meal/
-```
 
-```json
 
-{
-    "creator": 3,
-    "invitee": [1,
-        2,
-        3,
-        4,
-        5
-    ],
-    "location": "Cary, NC",
-    "radius": 20,
-    "lat": null,
-    "lon": null
-}
 
-```
 
-### response
 
 
-```txt
 
-HTTP 201 Created
-Allow: GET, POST, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
-```
-
-
-
-```json
-{
-  "id": 10,
-  "creator": 3,
-  "created_date": "2022-04-27T10:06:16.694038-05:00",
-  "invitee": [
-    2,
-    3,
-    4,
-    5,
-    1
-  ],
-  "location": "Cary, NC",
-  "radius": 20,
-  "lat": null,
-  "lon": null
-}
-```
-
-
-
-<!-------------------------- List meals ------------------------------>
-
-
-## List All meals
-
-[Back to Endpoints](#api-endpoints)
-
-
-### request
-
-
-User must be logged in and authenticated with Token in header
-
-
-```
-GET /api/meal/
-```
-
-### response
-
-
-User must be logged in and authenticated.  Token in header
-
-
-```txt
-
-HTTP 200 OK
-Allow: GET, POST, HEAD, OPTIONS
-Content-Type: application/json
-Vary: Accept
-
-```
-
-
-
-
-```json
-[
-    {
-        "id": 3,
-        "creator": 1,
-        "created_date": "2022-04-24T17:40:22.850266-05:00",
-        "invitee": [],
-        "location": "Raleigh",
-        "radius": 20,
-        "lat": null,
-        "lon": null
-    },
-    {
-        "id": 4,
-        "creator": 1,
-        "created_date": "2022-04-25T09:51:02.586210-05:00",
-        "invitee": [],
-        "location": "Cary",
-        "radius": 20,
-        "lat": null,
-        "lon": null
-    },
-    {
-        "id": 5,
-        "creator": 1,
-        "created_date": "2022-04-25T09:51:24.026446-05:00",
-        "invitee": [],
-        "location": "North Myrtle Beach",
-        "radius": 20,
-        "lat": null,
-        "lon": null
-    }
-]
-```
-
-
-
-
-<!--------------------------- Register new User ------------------------------>
-## Register a new user
-
-[Back to Endpoints](#api-endpoints)
-
-### request
-
-Username and password are required.
-
-```json
-POST /api/auth/users
-
-{
-  "username": "admin",
-  "password": "admin"
-}
-```
-
-### response
-
-
-```txt
-
-201 Created
-
-```
-
-
-
-```json
-{
-  "email": "",
-  "username": "admin",
-  "id": 3
-}
-
-```
-
-<!-------------------------- LOGIN ------------------------------>
-## Log In
-
-[Back to Endpoints](#api-endpoints)
-
-### request
-
-```
-POST /api/auth/token/login
-```
-
-```json
-{
-  "username": "admin",
-  "password": "admin"
-}
-```
-
-### response
-
-
-```txt
-
-200 OK
-400 Bad Request
-
-```
-
-
-
-```json
-{
-  "auth_token": "c312049c7f034a3d1b52eabc2040b46e094ff34c"
-}
-``` 
-
-
-
-<!-------------------------- LOGOUT ------------------------------>
-## Log Out 
-
-[Back to Endpoints](#api-endpoints)
-
-### request
-
-```
-POST /api/auth/token/logout
-```
-
-### response
-
-```txt
-204 No Content
-```
-
-
-## TemplateHeader
-
-[Back to Endpoints](#api-endpoints)
-
-### request
-
-User must be logged in 
-
-User must be logged in and authenticated with Token in header
-Required Fields:
-
-```txt
-POST 
-```
-
-```json
-
-```
-
-### response
-
-```txt
-200 Message
-```
-
-```json
-
-```
 
 
