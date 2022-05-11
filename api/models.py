@@ -65,6 +65,7 @@ class Restaurant(models.Model):
 class Meal(models.Model):
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="creator")
+    creator_name = models.CharField(blank=True, null=True, max_length=100)
     created_date = models.DateTimeField(auto_now_add=datetime.now)
     invitee = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name='invitee')

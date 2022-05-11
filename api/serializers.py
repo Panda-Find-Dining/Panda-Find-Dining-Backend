@@ -78,15 +78,13 @@ class MealSerializer(serializers.ModelSerializer):
     '''
     num_of_diners = serializers.ReadOnlyField()
 
-    creator = serializers.SlugRelatedField(
-        slug_field="username", read_only=True)
-
     class Meta:
         model = Meal
         fields = (
             'id',
             'num_of_diners',
             'creator',
+            'creator_name',
             'invitee',
             'invitee_names',
             'created_date',
